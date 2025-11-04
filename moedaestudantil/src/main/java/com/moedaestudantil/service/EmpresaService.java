@@ -1,10 +1,14 @@
+
 package com.moedaestudantil.service;
+
+import org.springframework.stereotype.Service;
 
 import com.moedaestudantil.domain.model.Empresa;
 import com.moedaestudantil.domain.repo.EmpresaRepository;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class EmpresaService {
     private final EmpresaRepository empresaRepository;
 
