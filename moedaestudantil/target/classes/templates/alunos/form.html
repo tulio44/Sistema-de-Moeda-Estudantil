@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title th:text="${aluno.id == null} ? 'Novo Aluno' : 'Editar Aluno'">Aluno</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:20px;max-width:900px}
+    form{display:flex;flex-direction:column;gap:10px}
+    label{display:flex;flex-direction:column;gap:4px}
+    input,select{padding:6px;border:1px solid #bbb}
+    fieldset{border:1px solid #bbb;padding:10px}
+    legend{padding:0 6px}
+    .row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .actions{display:flex;gap:8px;margin-top:8px}
+    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000}
+    a.button:hover,button:hover{background:#eee}
+    .muted{font-size:12px;color:#666}
+  </style>
+</head>
+<body>
+  <h1 th:text="${aluno.id == null} ? 'Novo Aluno' : 'Editar Aluno'">Aluno</h1>
+
+  <div th:with="isEdicao=${aluno != null and aluno.id != null}">
+    <form action="/ui/alunos" method="post">
+      <input type="hidden" name="id" th:value="${aluno.id}">
+      <input type="hidden" name="versao" th:value="${aluno.versao}">
+
+      <fieldset>
+        <legend>Dados do Aluno</legend>
+        <div class="row">
+          <label>Nome
+            <input name="nome" th:value="${aluno.nome}" required>
+          </label>
+          <label>CPF
+            <input name="cpf" th:value="${aluno.cpf}">
+          </label>
+          <label>RG
+            <input name="rg" th:value="${aluno.rg}">
+          </label>
+          <label>Endereço
+            <input name="endereco" th:value="${aluno.endereco}">
+          </label>
+          <label>Instituição
+            <select name="instituicao.id" required>
+              <option value="">-- selecione --</option>
+              <option th:each="i : ${instituicoes}"
+                      th:value="${i.id}"
+                      th:text="${i.nome}"
+                      th:selected="${aluno.instituicao != null and aluno.instituicao.id == i.id}">
+              </option>
+            </select>
+          </label>
+          <label>Curso
+            <select name="curso.id" required>
+              <option value="">-- selecione --</option>
+              <option th:each="c : ${cursos}"
+                      th:value="${c.id}"
+                      th:text="${c.nome}"
+                      th:selected="${aluno.curso != null and aluno.curso.id == c.id}">
+              </option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Usuário de Acesso</legend>
+
+        <!-- EMAIL -->
+        <label>Email (login)
+          <!-- criação: obrigatório -->
+          <input name="email"
+                 th:if="${!isEdicao}"
+                 th:value="${aluno.user != null ? aluno.user.email : ''}"
+                 autocomplete="email"
+                 required>
+          <!-- edição: opcional -->
+          <input name="email"
+                 th:if="${isEdicao}"
+                 th:value="${aluno.user != null ? aluno.user.email : ''}"
+                 autocomplete="email">
+        </label>
+
+        <!-- SENHA (corrigido: NÃO usar th:text no label que contém inputs) -->
+        <label>
+          <span th:text="${isEdicao} ? 'Nova senha (opcional)' : 'Senha'">Senha</span>
+
+          <!-- criação: obrigatório -->
+          <input name="senha"
+                 type="password"
+                 th:if="${!isEdicao}"
+                 autocomplete="new-password"
+                 minlength="4"
+                 required>
+
+          <!-- edição: opcional -->
+          <input name="senha"
+                 type="password"
+                 th:if="${isEdicao}"
+                 autocomplete="new-password"
+                 minlength="4"
+                 placeholder="(deixe em branco para manter)">
+        </label>
+
+        <div class="muted" th:if="${isEdicao}">
+          Deixe a senha em branco para manter a atual.
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit">Salvar</button>
+        <a class="button" href="/ui/alunos">Voltar</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

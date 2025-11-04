@@ -3,6 +3,7 @@ import jakarta.persistence.*; import java.time.Instant;
 import com.moedaestudantil.domain.model.enums.Role;
 
 @Entity
+@Table(name = "users") 
 public class User {
   @Id @GeneratedValue private Long id;
   @Column(nullable=false, unique=true, length=180) private String email;

@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Instant;
+
 @Configuration
 public class Bootstrap {
 
@@ -41,12 +43,16 @@ public class Bootstrap {
       uProf.setEmail("prof@uni.x");
       uProf.setSenhaHash("{noop}senha");
       uProf.setRole(Role.PROFESSOR);
+      uProf.setAtivo(true);
+      uProf.setCriadoEm(Instant.now());
       uProf = userRepo.save(uProf);
 
       User uAluno = new User();
       uAluno.setEmail("aluno@uni.x");
       uAluno.setSenhaHash("{noop}senha");
       uAluno.setRole(Role.ALUNO);
+      uAluno.setAtivo(true);
+      uAluno.setCriadoEm(Instant.now());
       uAluno = userRepo.save(uAluno);
 
       Professor prof = new Professor();
@@ -71,23 +77,34 @@ public class Bootstrap {
       uEmp.setEmail("empresa@loja.x");
       uEmp.setSenhaHash("{noop}senha");
       uEmp.setRole(Role.EMPRESA);
+      uEmp.setAtivo(true);
+      uEmp.setCriadoEm(Instant.now());
       uEmp = userRepo.save(uEmp);
 
       Empresa emp = new Empresa();
       emp.setUser(uEmp);
+      emp.setCnpj("00.000.000/0001-00");     // obrigatório
       emp.setNomeFantasia("Loja Parceira");
       emp.setEmailContato("contato@loja.x");
+      emp.setEndereco("Av Central, 100");
       emp = empRepo.save(emp);
 
       Vantagem v = new Vantagem();
       v.setEmpresa(emp);
       v.setTitulo("Desconto 10% Lanchonete");
-      v.setCusto(200);
+      v.setCusto(200);            // custa 200
       v.setAtivo(true);
+      // v.setDescricao("Cupom de 10% no RU"); // use se for @NotNull
+      // v.setFotoUrl("http://exemplo/foto.jpg");
       v = vantRepo.save(v);
 
+      // Credita 1000 no professor (semestre 2025/2)
       creditoSrv.creditar(prof.getId(), 2025, 2);
-      moedaSrv.enviarMoedas(prof.getId(), aluno.getId(), 150, "Participação em aula");
+
+      // Envia 250 para o aluno (fica >= 200 para resgatar)
+      moedaSrv.enviarMoedas(prof.getId(), aluno.getId(), 250, "Participação em aula");
+
+      // Agora consegue resgatar a vantagem de 200
       moedaSrv.resgatarVantagem(aluno.getId(), v.getId());
 
       System.out.println("==== BOOTSTRAP FINALIZADO ====");

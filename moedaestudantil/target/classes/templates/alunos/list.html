@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Alunos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:20px}
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #ddd;padding:8px}
+    th{background:#f2f2f2;text-align:left}
+    .actions{display:flex;gap:8px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000}
+    a.button:hover,button:hover{background:#eee}
+    .empty{padding:10px;border:1px dashed #bbb;background:#fcfcfc}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Alunos</h1>
+    <a class="button" href="/ui/alunos/novo">Novo</a>
+  </div>
+
+  <div th:if="${#lists.isEmpty(alunos)}" class="empty">Nenhum aluno cadastrado.</div>
+
+  <table th:if="${!#lists.isEmpty(alunos)}">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>RG</th>
+        <th>Endereço</th>
+        <th>Instituição</th>
+        <th>Curso</th>
+        <th>Email (User)</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="a : ${alunos}">
+        <td th:text="${a.id}">1</td>
+        <td th:text="${a.nome}">Nome</td>
+        <td th:text="${a.cpf}">000</td>
+        <td th:text="${a.rg}">000</td>
+        <td th:text="${a.endereco}">Rua X</td>
+        <td th:text="${a.instituicao != null ? a.instituicao.nome : '-'}">Inst</td>
+        <td th:text="${a.curso != null ? a.curso.nome : '-'}">Curso</td>
+        <td th:text="${a.user != null ? a.user.email : '-'}">email@dominio</td>
+        <td class="actions">
+          <a class="button" th:href="@{'/ui/alunos/' + ${a.id} + '/editar'}">Editar</a>
+          <form th:action="@{'/ui/alunos/' + ${a.id} + '/excluir'}" method="post" onsubmit="return confirm('Excluir este aluno?');">
+            <button type="submit">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

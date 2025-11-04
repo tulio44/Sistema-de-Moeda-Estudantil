@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Empresa - Formulário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:20px;max-width:900px}
+    label{display:block;margin-top:10px;font-weight:bold}
+    input{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000}
+    a.button:hover,button:hover{background:#eee}
+    .actions{display:flex;gap:8px;margin-top:16px}
+    .note{font-size:12px;color:#666}
+    .alert{padding:10px;margin-bottom:12px;border:1px solid #d9d9d9;background:#fff8e1}
+    .err{background:#fdecea;border-color:#f5c6c2}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1 th:text="${empresa.id == null ? 'Nova Empresa' : 'Editar Empresa'}">Empresa</h1>
+  <a class="button" href="/ui/empresas">Voltar</a>
+</div>
+
+<div th:if="${msgErro}" class="alert err" th:text="${msgErro}">Erro</div>
+
+<form th:action="@{/ui/empresas/salvar}" method="post" th:object="${empresa}">
+  <!-- Controle otimista -->
+  <input type="hidden" th:field="*{id}">
+  <input type="hidden" th:field="*{versao}">
+
+  <label for="userId">Usuário (ID) <span class="note">(obrigatório)</span></label>
+  <input id="userId" name="userId" type="number" min="1"
+         th:value="${empresa.user != null ? empresa.user.id : null}"
+         placeholder="ID do usuário dono da empresa">
+
+  <div class="row">
+    <div>
+      <label for="cnpj">CNPJ</label>
+      <input id="cnpj" th:field="*{cnpj}" placeholder="00.000.000/0000-00" required>
+    </div>
+    <div>
+      <label for="nomeFantasia">Nome Fantasia / Razão Social</label>
+      <input id="nomeFantasia" th:field="*{nomeFantasia}" placeholder="Minha Empresa LTDA" required>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label for="telefone">Telefone</label>
+      <input id="telefone" th:field="*{telefone}" placeholder="(00) 00000-0000">
+    </div>
+    <div>
+      <label for="emailContato">Email de Contato</label>
+      <input id="emailContato" th:field="*{emailContato}" placeholder="contato@empresa.com">
+    </div>
+  </div>
+
+  <label for="endereco">Endereço</label>
+  <input id="endereco" th:field="*{endereco}" placeholder="Rua, número, bairro, cidade - UF">
+
+  <div class="actions">
+    <button type="submit">Salvar</button>
+    <a class="button" href="/ui/empresas">Cancelar</a>
+  </div>
+</form>
+</body>
+</html>

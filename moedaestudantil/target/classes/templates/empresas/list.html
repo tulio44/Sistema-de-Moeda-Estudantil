@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Empresas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:20px}
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #ddd;padding:8px}
+    th{background:#f2f2f2;text-align:left}
+    .actions{display:flex;gap:8px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000}
+    a.button:hover,button:hover{background:#eee}
+    .empty{padding:10px;border:1px dashed #bbb;background:#fcfcfc;margin-top:8px}
+    .alert{padding:10px;margin-bottom:12px;border:1px solid #d9d9d9;background:#fff8e1}
+    .ok{background:#e9f9ee;border-color:#bfe6cb}
+    .err{background:#fdecea;border-color:#f5c6c2}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Empresas</h1>
+    <a class="button" href="/ui/empresas/novo">Nova</a>
+  </div>
+
+  <div th:if="${msgOk}" class="alert ok" th:text="${msgOk}">OK</div>
+  <div th:if="${erro}" class="alert err" th:text="${erro}">Erro</div>
+
+  <div th:if="${#lists.isEmpty(empresas)}" class="empty">Nenhuma empresa cadastrada.</div>
+
+  <table th:if="${!#lists.isEmpty(empresas)}">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Razão Social</th>
+      <th>CNPJ</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Endereço</th>
+      <th>Usuário (email)</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${empresas}">
+      <td th:text="${e.id}">1</td>
+      <td th:text="${e.razaoSocial}">Nome Fantasia</td>
+      <td th:text="${e.cnpj}">00.000.000/0000-00</td>
+      <td th:text="${e.telefone}">(00) 0000-0000</td>
+      <td th:text="${e.emailContato}">contato@empresa.com</td>
+      <td th:text="${e.endereco}">Rua X</td>
+      <td th:text="${e.user != null ? e.user.email : '-'}">email@dominio</td>
+      <td class="actions">
+        <a class="button" th:href="@{'/ui/empresas/' + ${e.id} + '/editar'}">Editar</a>
+        <form th:action="@{'/ui/empresas/' + ${e.id} + '/excluir'}" method="post"
+              onsubmit="return confirm('Excluir esta empresa?');">
+          <button type="submit">Excluir</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</body>
+</html>
