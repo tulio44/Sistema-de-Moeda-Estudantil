@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Empresa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="container py-4">
+    <h1>CRUD Empresa</h1>
+    <form id="empresaForm" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="nomeFantasia" placeholder="Nome Fantasia" required>
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="cnpj" placeholder="CNPJ" required>
+            </div>
+            <div class="col-md-3">
+                <input type="email" class="form-control" id="emailContato" placeholder="Email Contato">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="endereco" placeholder="Endereço">
+            </div>
+        </div>
+        <div class="row g-2 mt-2">
+            <div class="col-md-6">
+                <input type="email" class="form-control" id="email" placeholder="Email do Usuário" required>
+            </div>
+            <div class="col-md-6">
+                <input type="password" class="form-control" id="senha" placeholder="Senha do Usuário" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Cadastrar Empresa</button>
+    </form>
+    <h2>Lista de Empresas</h2>
+    <table class="table table-bordered" id="empresasTable">
+        <thead>
+            <tr>
+                <th>ID</th><th>Nome Fantasia</th><th>CNPJ</th><th>Email</th><th>Email Contato</th><th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        const api = '/empresas';
+        function carregarEmpresas() {
+            fetch(api).then(r=>r.json()).then(data => {
+                const tbody = document.querySelector('#empresasTable tbody');
+                tbody.innerHTML = '';
+                data.forEach(empresa => {
+                    tbody.innerHTML += `<tr>
+                        <td>${empresa.id}</td>
+                        <td>${empresa.nomeFantasia}</td>
+                        <td>${empresa.cnpj}</td>
+                        <td>${empresa.user?.email || ''}</td>
+                        <td>${empresa.emailContato || ''}</td>
+                        <td>
+                            <button class='btn btn-danger btn-sm' onclick='deletarEmpresa(${empresa.id})'>Excluir</button>
+                        </td>
+                    </tr>`;
+                });
+            });
+        }
+        document.getElementById('empresaForm').onsubmit = function(e) {
+            e.preventDefault();
+            const empresa = {
+                nomeFantasia: nomeFantasia.value,
+                cnpj: cnpj.value,
+                emailContato: emailContato.value,
+                endereco: endereco.value,
+                user: { email: email.value, senhaHash: senha.value, role: 'EMPRESA' }
+            };
+            fetch(api, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(empresa)
+            }).then(()=>{ this.reset(); carregarEmpresas(); });
+        };
+        function deletarEmpresa(id) {
+            fetch(api + '/' + id, { method: 'DELETE' }).then(carregarEmpresas);
+        }
+        carregarEmpresas();
+    </script>
+</body>
+</html>
