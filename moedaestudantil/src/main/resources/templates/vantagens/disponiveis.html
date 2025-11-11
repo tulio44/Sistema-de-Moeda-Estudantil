@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Vantagens Disponíveis</title>
+</head>
+<body style="font-family:system-ui, -apple-system, sans-serif;">
+<h2>Vantagens Disponíveis para Resgate</h2>
+
+<div th:if="${msgOk}">
+  <p style="color:green;" th:text="${msgOk}"></p>
+</div>
+<div th:if="${erro}">
+  <p style="color:red;" th:text="${erro}"></p>
+</div>
+
+<div th:if="${#lists.isEmpty(vantagens)}">
+  <p>Nenhuma vantagem disponível no momento.</p>
+</div>
+
+<div th:each="v : ${vantagens}"
+     style="border:1px solid #d1d5db; padding:10px; margin-bottom:10px; max-width:420px;">
+  <h3 th:text="${v.titulo}"></h3>
+  <p th:text="${v.descricao}"></p>
+  <p><strong>Custo:</strong> <span th:text="${v.custo}"></span> moedas</p>
+  <div>
+    <img th:if="${v.fotoUrl}"
+         th:src="'data:image/png;base64,' + ${v.fotoUrl}"
+         style="max-width:200px; max-height:200px;"/>
+  </div>
+  <form th:action="@{'/ui/vantagens/' + ${v.id} + '/resgatar'}" method="post">
+    <button type="submit">Resgatar (demo)</button>
+  </form>
+</div>
+
+<p>
+  <a th:href="@{/ui/minhas-vantagens}">Voltar para área do aluno</a> |
+  <a th:href="@{/logout}">Sair</a>
+</p>
+</body>
+</html>

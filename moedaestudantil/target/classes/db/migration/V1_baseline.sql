@@ -57,7 +57,7 @@ CREATE TABLE vantagem (
   empresa_id BIGINT NOT NULL,
   titulo VARCHAR(200) NOT NULL,
   descricao TEXT,
-  foto_url VARCHAR(500),
+  foto_url CLOB,
   custo INT NOT NULL,
   ativo BOOLEAN NOT NULL DEFAULT TRUE,
   FOREIGN KEY (empresa_id) REFERENCES empresa(id)

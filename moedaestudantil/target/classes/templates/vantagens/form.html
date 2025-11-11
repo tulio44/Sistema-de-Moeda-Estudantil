@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Vantagem</title>
+</head>
+<body style="font-family:system-ui, -apple-system, sans-serif;">
+<h2 th:text="${vantagem.id} != null ? 'Editar Vantagem' : 'Nova Vantagem'"></h2>
+
+<form th:action="@{/ui/vantagens/salvar}" th:object="${vantagem}" method="post"
+      enctype="multipart/form-data">
+  <input type="hidden" th:field="*{id}"/>
+
+  <label>Título:</label><br>
+  <input type="text" th:field="*{titulo}" required><br><br>
+
+  <label>Descrição:</label><br>
+  <textarea th:field="*{descricao}" rows="4" cols="40" required></textarea><br><br>
+
+  <label>Custo em moedas:</label><br>
+  <input type="number" th:field="*{custo}" min="1" required><br><br>
+
+  <label>Imagem (opcional):</label><br>
+  <input type="file" name="imagemArquivo" accept="image/*"><br><br>
+
+  <label>Ativa:</label>
+  <input type="checkbox" th:field="*{ativo}"><br><br>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<p><a th:href="@{/ui/vantagens}">Voltar para minhas vantagens</a></p>
+</body>
+</html>

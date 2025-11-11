@@ -4,8 +4,8 @@ import com.moedaestudantil.domain.model.Empresa;
 import com.moedaestudantil.domain.model.User;
 import com.moedaestudantil.domain.repo.EmpresaRepository;
 import com.moedaestudantil.domain.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,62 +15,82 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/ui/empresas")
 public class EmpresaViewController {
 
-  @Autowired
-  private EmpresaRepository empresaRepository;
+    private final EmpresaRepository empresaRepository;
+    private final UserRepository userRepository;
 
-  @Autowired
-  private UserRepository userRepository;
+    public EmpresaViewController(EmpresaRepository empresaRepository,
+                                 UserRepository userRepository) {
+        this.empresaRepository = empresaRepository;
+        this.userRepository = userRepository;
+    }
 
-  @GetMapping
-  public String listar(Model model,
-                       @RequestParam(value = "erro", required = false) String erro) {
-    model.addAttribute("empresas", empresaRepository.findAll());
-    model.addAttribute("erro", erro);
-    return "empresas/list";
-  }
+    /**
+     * Mostrar / editar cadastro da empresa ligada ao usuário logado.
+     * Cada usuário EMPRESA gerencia apenas a sua empresa.
+     */
+@GetMapping
+public String verOuEditarEmpresa(Model model) {
+    User userLogado = getUsuarioLogado();
 
-  @GetMapping("/novo")
-  public String novo(Model model) {
-    model.addAttribute("empresa", new Empresa());
+    Empresa empresa = empresaRepository.findByUser(userLogado)
+            .orElseGet(() -> {
+                Empresa e = new Empresa();
+                e.setUser(userLogado);
+                return e;
+            });
+
+    model.addAttribute("empresa", empresa);
     return "empresas/form";
-  }
+}
 
-  @GetMapping("/{id}/editar")
-  public String editar(@PathVariable Long id, Model model) {
-    Empresa e = empresaRepository.findById(id).orElseThrow();
-    model.addAttribute("empresa", e);
-    return "empresas/form";
-  }
+    /**
+     * Salvar empresa sempre vinculando ao usuário logado,
+     * sem precisar informar userId no formulário.
+     */
+@PostMapping("/salvar")
+public String salvar(@ModelAttribute("empresa") Empresa form,
+                     RedirectAttributes ra) {
 
-  @PostMapping("/salvar")
-  public String salvar(@ModelAttribute Empresa empresa,
-                       @RequestParam(name="userId", required=false) Long userId,
-                       RedirectAttributes ra) {
-    // Vincula o User obrigatório
-    if (userId != null) {
-      User u = userRepository.findById(userId).orElse(null);
-      if (u != null) empresa.setUser(u);
-    }
-    if (empresa.getUser() == null) {
-      ra.addFlashAttribute("msgErro", "Informe um usuário válido (userId).");
-      ra.addFlashAttribute("empresa", empresa);
-      return "redirect:/ui/empresas/novo";
+    User userLogado = getUsuarioLogado();
+
+    // Verifica se já existe empresa vinculada a este usuário
+    var existenteOpt = empresaRepository.findByUser(userLogado);
+
+    if (existenteOpt.isPresent()) {
+        // Se já existe, garantimos que vamos atualizar ela
+        Empresa existente = existenteOpt.get();
+        form.setId(existente.getId());
     }
 
-    empresaRepository.save(empresa);
-    ra.addFlashAttribute("msgOk", "Empresa salva com sucesso.");
+    // Garante vínculo com o usuário logado SEM depender de campo no HTML
+    form.setUser(userLogado);
+
+    empresaRepository.save(form);
+
+    ra.addFlashAttribute("msgOk", "Dados da empresa salvos com sucesso.");
     return "redirect:/ui/empresas";
-  }
+}
 
-  @PostMapping("/{id}/excluir")
-  public String excluir(@PathVariable Long id, RedirectAttributes ra) {
-    try {
-      empresaRepository.deleteById(id);
-      ra.addFlashAttribute("msgOk", "Empresa excluída.");
-    } catch (DataIntegrityViolationException e) {
-      ra.addFlashAttribute("erro",
-          "Não é possível excluir: há registros vinculados (ex.: Vantagem).");
+
+    /**
+     * Opcional: permitir que a empresa exclua seu cadastro (cuidado na prática).
+     */
+    @PostMapping("/excluir")
+    public String excluir(RedirectAttributes ra) {
+        User userLogado = getUsuarioLogado();
+
+        empresaRepository.findByUser(userLogado).ifPresent(empresaRepository::delete);
+
+        ra.addFlashAttribute("msgOk", "Cadastro de empresa excluído.");
+        return "redirect:/ui/empresas";
     }
-    return "redirect:/ui/empresas";
-  }
+
+    // =============== Helpers ===============
+
+private User getUsuarioLogado() {
+    var auth = SecurityContextHolder.getContext().getAuthentication();
+    String email = auth.getName();
+    return userRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalStateException("Usuário autenticado não encontrado."));
+}
 }

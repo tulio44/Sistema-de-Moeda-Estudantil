@@ -27,9 +27,16 @@ public class User {
   public String getSenhaHash() {
     return senhaHash;
   }
-  public void setSenhaHash(String senhaHash) {
-    this.senhaHash = senhaHash;
-  }
+public void setSenhaHash(String senhaHash) {
+    if (senhaHash == null) {
+        this.senhaHash = null;
+    } else if (!senhaHash.startsWith("{noop}")) {
+        this.senhaHash = "{noop}" + senhaHash;
+    } else {
+        this.senhaHash = senhaHash;
+    }
+}
+
   public Role getRole() {
     return role;
   }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - Moeda Estudantil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family:system-ui, -apple-system, sans-serif; background:#020817; color:#e5e7eb;
+           display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; }
+    .box { background:#111827; padding:2rem 2.5rem; border-radius:1rem;
+           box-shadow:0 18px 40px rgba(0,0,0,.45); width:100%; max-width:420px;}
+    h2 { margin:0 0 .4rem; color:#38bdf8; }
+    p.subtitle { margin:0 0 1.3rem; font-size:.82rem; color:#9ca3af; }
+    label { font-size:.8rem; color:#9ca3af; display:block; margin-bottom:.2rem; }
+    input, select { width:100%; padding:.55rem .7rem; margin-bottom:.9rem;
+                    border-radius:.5rem; border:1px solid #374151;
+                    background:#020817; color:#e5e7eb; font-size:.9rem; }
+    input:focus, select:focus { outline:none; border-color:#38bdf8;
+                                box-shadow:0 0 0 1px rgba(56,189,248,.18); }
+    button { width:100%; padding:.7rem; border:none; border-radius:.5rem;
+             background:#38bdf8; color:#020817; font-weight:600; cursor:pointer; font-size:.95rem;}
+    button:hover { background:#0ea5e9; }
+    .alert { padding:.45rem .65rem; border-radius:.4rem; font-size:.78rem; margin-bottom:.8rem; }
+    .alert.error { background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.5); color:#fecaca; }
+    .alert.success { background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.5); color:#bbf7d0; }
+    .back { margin-top:.6rem; font-size:.8rem; text-align:center; }
+    .back a { color:#38bdf8; text-decoration:none; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <h2>Criar acesso</h2>
+  <p class="subtitle">Selecione o tipo de conta. O vínculo com Aluno/Empresa vocês mostram na demo.</p>
+
+  <div th:if="${erro}" class="alert error" th:text="${erro}"></div>
+  <div th:if="${msgOk}" class="alert success" th:text="${msgOk}"></div>
+
+  <form th:action="@{/cadastro}" th:object="${userForm}" method="post">
+    <label for="email">E-mail</label>
+    <input id="email" type="email" th:field="*{email}" required>
+
+    <label for="senha">Senha</label>
+    <input id="senha" type="password" th:field="*{senha}" required>
+
+    <label for="role">Tipo de acesso</label>
+    <select id="role" th:field="*{role}" required>
+      <option value="">Selecione...</option>
+      <option value="ALUNO">Aluno</option>
+      <option value="EMPRESA">Empresa</option>
+    </select>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <div class="back">
+    Já tem conta? <a th:href="@{/login}">Ir para o login</a>
+  </div>
+</div>
+</body>
+</html>

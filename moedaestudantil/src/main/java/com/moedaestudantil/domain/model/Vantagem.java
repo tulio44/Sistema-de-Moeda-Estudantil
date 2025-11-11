@@ -3,13 +3,29 @@ import jakarta.persistence.*;
 
 @Entity
 public class Vantagem {
-  @Id @GeneratedValue private Long id;
-  @ManyToOne(optional=false) private Empresa empresa;
-  @Column(nullable=false) private String titulo;
-  @Lob private String descricao;
+
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  @ManyToOne(optional=false)
+  private Empresa empresa;
+
+  @Column(nullable=false)
+  private String titulo;
+
+  @Lob
+  private String descricao;
+
+  @Lob
+  @Column(name = "foto_url")
   private String fotoUrl;
-  @Column(nullable=false) private Integer custo;
-  @Column(nullable=false) private Boolean ativo = true;
+
+  @Column(nullable=false)
+  private Integer custo;
+
+  @Column(nullable=false)
+  private Boolean ativo = true;
   // g/s...
   public Long getId() {
     return id;

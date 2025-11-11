@@ -13,7 +13,7 @@
     legend{padding:0 6px}
     .row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     .actions{display:flex;gap:8px;margin-top:8px}
-    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000}
+    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000;border-radius:4px}
     a.button:hover,button:hover{background:#eee}
     .muted{font-size:12px;color:#666}
   </style>
@@ -67,50 +67,31 @@
       <fieldset>
         <legend>Usuário de Acesso</legend>
 
-        <!-- EMAIL -->
         <label>Email (login)
-          <!-- criação: obrigatório -->
           <input name="email"
-                 th:if="${!isEdicao}"
                  th:value="${aluno.user != null ? aluno.user.email : ''}"
                  autocomplete="email"
                  required>
-          <!-- edição: opcional -->
-          <input name="email"
-                 th:if="${isEdicao}"
-                 th:value="${aluno.user != null ? aluno.user.email : ''}"
-                 autocomplete="email">
         </label>
 
-        <!-- SENHA (corrigido: NÃO usar th:text no label que contém inputs) -->
         <label>
-          <span th:text="${isEdicao} ? 'Nova senha (opcional)' : 'Senha'">Senha</span>
-
-          <!-- criação: obrigatório -->
+          <span th:text="${aluno.id != null} ? 'Nova senha (opcional)' : 'Senha'">Senha</span>
           <input name="senha"
                  type="password"
-                 th:if="${!isEdicao}"
                  autocomplete="new-password"
                  minlength="4"
-                 required>
-
-          <!-- edição: opcional -->
-          <input name="senha"
-                 type="password"
-                 th:if="${isEdicao}"
-                 autocomplete="new-password"
-                 minlength="4"
+                 th:attr="required=${aluno.id == null ? 'required' : null}"
                  placeholder="(deixe em branco para manter)">
         </label>
 
-        <div class="muted" th:if="${isEdicao}">
+        <div class="muted" th:if="${aluno.id != null}">
           Deixe a senha em branco para manter a atual.
         </div>
       </fieldset>
 
       <div class="actions">
         <button type="submit">Salvar</button>
-        <a class="button" href="/ui/alunos">Voltar</a>
+        <a class="button" href="/ui/minhas-vantagens">Minhas Vantagens</a>
       </div>
     </form>
   </div>

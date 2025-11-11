@@ -2,7 +2,7 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <title>Empresa - Formulário</title>
+  <title>Empresa - Meu Cadastro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body{font-family:Arial,Helvetica,sans-serif;margin:20px;max-width:900px}
@@ -10,7 +10,8 @@
     input{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;text-decoration:none;color:#000}
+    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;
+                    text-decoration:none;color:#000;border-radius:4px}
     a.button:hover,button:hover{background:#eee}
     .actions{display:flex;gap:8px;margin-top:16px}
     .note{font-size:12px;color:#666}
@@ -20,21 +21,16 @@
 </head>
 <body>
 <div class="topbar">
-  <h1 th:text="${empresa.id == null ? 'Nova Empresa' : 'Editar Empresa'}">Empresa</h1>
-  <a class="button" href="/ui/empresas">Voltar</a>
+  <h1 th:text="${empresa.id == null ? 'Cadastrar Empresa' : 'Editar Empresa'}">Empresa</h1>
+  <a class="button" th:href="@{/ui/vantagens}">Minhas Vantagens</a>
 </div>
 
 <div th:if="${msgErro}" class="alert err" th:text="${msgErro}">Erro</div>
+<div th:if="${msgOk}" class="alert" th:text="${msgOk}"></div>
 
 <form th:action="@{/ui/empresas/salvar}" method="post" th:object="${empresa}">
-  <!-- Controle otimista -->
-  <input type="hidden" th:field="*{id}">
-  <input type="hidden" th:field="*{versao}">
-
-  <label for="userId">Usuário (ID) <span class="note">(obrigatório)</span></label>
-  <input id="userId" name="userId" type="number" min="1"
-         th:value="${empresa.user != null ? empresa.user.id : null}"
-         placeholder="ID do usuário dono da empresa">
+  <!-- id só pra edição; user é vinculado automaticamente no controller -->
+  <input type="hidden" th:field="*{id}"/>
 
   <div class="row">
     <div>
@@ -61,9 +57,13 @@
   <label for="endereco">Endereço</label>
   <input id="endereco" th:field="*{endereco}" placeholder="Rua, número, bairro, cidade - UF">
 
+  <p class="note">
+    Este cadastro será automaticamente vinculado ao usuário logado.
+  </p>
+
   <div class="actions">
     <button type="submit">Salvar</button>
-    <a class="button" href="/ui/empresas">Cancelar</a>
+    <a class="button" th:href="@{/ui/vantagens}">Cancelar</a>
   </div>
 </form>
 </body>

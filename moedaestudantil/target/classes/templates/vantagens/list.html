@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Minhas Vantagens - Empresa</title>
+</head>
+<body style="font-family:system-ui, -apple-system, sans-serif;">
+<h2>Minhas Vantagens (Empresa)</h2>
+
+<div th:if="${msgOk}">
+  <p style="color:green;" th:text="${msgOk}"></p>
+</div>
+<div th:if="${erro}">
+  <p style="color:red;" th:text="${erro}"></p>
+</div>
+
+<p>
+  <a th:href="@{/ui/vantagens/nova}">+ Cadastrar nova vantagem</a> |
+  <a th:href="@{/ui/empresas}">Gerenciar dados da empresa</a> |
+  <a th:href="@{/logout}">Sair</a>
+</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <tr>
+    <th>Título</th>
+    <th>Custo (moedas)</th>
+    <th>Ativa</th>
+    <th>Imagem</th>
+    <th>Ações</th>
+  </tr>
+  <tr th:each="v : ${vantagens}">
+    <td th:text="${v.titulo}"></td>
+    <td th:text="${v.custo}"></td>
+    <td th:text="${v.ativo}"></td>
+    <td>
+      <img th:if="${v.fotoUrl}"
+           th:src="'data:image/png;base64,' + ${v.fotoUrl}"
+           style="max-width:80px; max-height:80px;"/>
+    </td>
+    <td>
+      <a th:href="@{'/ui/vantagens/' + ${v.id} + '/editar'}">Editar</a>
+      <form th:action="@{'/ui/vantagens/' + ${v.id} + '/excluir'}"
+            method="post" style="display:inline;">
+        <button type="submit">Excluir</button>
+      </form>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

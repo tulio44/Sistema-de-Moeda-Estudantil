@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Vantagens</title>
+</head>
+<body>
+<h1>Minhas Vantagens</h1>
+
+<p th:text="'Olá, ' + ${aluno.nome} + '!'">Olá, Aluno!</p>
+<p>Saldo atual: <span th:text="${saldo}">0</span> moedas</p>
+
+<h2>Vantagens resgatadas</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Data</th>
+        <th>Descrição</th>
+        <th>Valor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tx : ${resgates}">
+        <td th:text="${#temporals.format(tx.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2025</td>
+        <td th:text="${tx.vantagem != null} ? ${tx.vantagem.titulo} : ${tx.mensagem}">Descrição</td>
+        <td th:text="${tx.quantidade}">0</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(resgates)}">
+        <td colspan="3">Nenhum resgate encontrado.</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
