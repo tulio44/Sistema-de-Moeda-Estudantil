@@ -1,70 +1,209 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <title>Empresa - Meu Cadastro</title>
+  <meta charset="UTF-8">
+  <title th:text="${empresa.id == null} ? 'Cadastrar Empresa' : 'Editar Empresa'">Empresa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;margin:20px;max-width:900px}
-    label{display:block;margin-top:10px;font-weight:bold}
-    input{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    a.button,button{padding:6px 10px;border:1px solid #888;background:#fafafa;cursor:pointer;
-                    text-decoration:none;color:#000;border-radius:4px}
-    a.button:hover,button:hover{background:#eee}
-    .actions{display:flex;gap:8px;margin-top:16px}
-    .note{font-size:12px;color:#666}
-    .alert{padding:10px;margin-bottom:12px;border:1px solid #d9d9d9;background:#fff8e1}
-    .err{background:#fdecea;border-color:#f5c6c2}
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 900px;
+      padding: 18px 18px 16px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      color: #111827;
+      font-weight: 600;
+    }
+    .subtitle {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 3px;
+    }
+    .btn-mini {
+      padding: 5px 9px;
+      font-size: 11px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #374151;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-mini:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+    .alert {
+      padding: 7px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .alert.err {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .alert.ok {
+      background: #ecfdf5;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 10px;
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 11px;
+      color: #6b7280;
+      gap: 3px;
+    }
+    input {
+      padding: 7px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      color: #111827;
+      width: 100%;
+    }
+    input::placeholder {
+      color: #9ca3af;
+      font-size: 11px;
+    }
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.10);
+    }
+    .note {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 2px;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      background: #3b82f6;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-secondary {
+      padding: 7px 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #3b82f6;
+      font-size: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    @media (max-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-<div class="topbar">
-  <h1 th:text="${empresa.id == null ? 'Cadastrar Empresa' : 'Editar Empresa'}">Empresa</h1>
-  <a class="button" th:href="@{/ui/vantagens}">Minhas Vantagens</a>
+<div class="card">
+  <div class="topbar">
+    <div>
+      <h1 th:text="${empresa.id == null} ? 'Cadastrar Empresa' : 'Editar Empresa'">Empresa</h1>
+      <div class="subtitle">
+        Seus dados de empresa vinculados ao usuário logado.
+      </div>
+    </div>
+    <div>
+      <a class="btn-mini" th:href="@{/ui/vantagens}">Minhas vantagens</a>
+      <a class="btn-mini" th:href="@{/logout}">Sair</a>
+    </div>
+  </div>
+
+  <div th:if="${msgErro}" class="alert err" th:text="${msgErro}">Erro</div>
+  <div th:if="${msgOk}" class="alert ok" th:text="${msgOk}"></div>
+
+  <form th:action="@{/ui/empresas/salvar}" method="post" th:object="${empresa}">
+    <input type="hidden" th:field="*{id}"/>
+
+    <div class="grid-2">
+      <label>
+        CNPJ
+        <input th:field="*{cnpj}" placeholder="00.000.000/0000-00" required>
+      </label>
+      <label>
+        Nome Fantasia / Razão Social
+        <input th:field="*{nomeFantasia}" placeholder="Minha Empresa LTDA" required>
+      </label>
+    </div>
+
+    <div class="grid-2">
+      <label>
+        Telefone
+        <input th:field="*{telefone}" placeholder="(00) 00000-0000">
+      </label>
+      <label>
+        E-mail de contato
+        <input th:field="*{emailContato}" placeholder="contato@empresa.com">
+      </label>
+    </div>
+
+    <label>
+      Endereço
+      <input th:field="*{endereco}" placeholder="Rua, número, bairro, cidade - UF">
+    </label>
+
+    <div class="note">
+      Este cadastro é automaticamente vinculado ao usuário que está logado.
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn-primary">Salvar</button>
+      <a class="btn-secondary" th:href="@{/ui/vantagens}">Cancelar</a>
+    </div>
+  </form>
 </div>
-
-<div th:if="${msgErro}" class="alert err" th:text="${msgErro}">Erro</div>
-<div th:if="${msgOk}" class="alert" th:text="${msgOk}"></div>
-
-<form th:action="@{/ui/empresas/salvar}" method="post" th:object="${empresa}">
-  <!-- id só pra edição; user é vinculado automaticamente no controller -->
-  <input type="hidden" th:field="*{id}"/>
-
-  <div class="row">
-    <div>
-      <label for="cnpj">CNPJ</label>
-      <input id="cnpj" th:field="*{cnpj}" placeholder="00.000.000/0000-00" required>
-    </div>
-    <div>
-      <label for="nomeFantasia">Nome Fantasia / Razão Social</label>
-      <input id="nomeFantasia" th:field="*{nomeFantasia}" placeholder="Minha Empresa LTDA" required>
-    </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label for="telefone">Telefone</label>
-      <input id="telefone" th:field="*{telefone}" placeholder="(00) 00000-0000">
-    </div>
-    <div>
-      <label for="emailContato">Email de Contato</label>
-      <input id="emailContato" th:field="*{emailContato}" placeholder="contato@empresa.com">
-    </div>
-  </div>
-
-  <label for="endereco">Endereço</label>
-  <input id="endereco" th:field="*{endereco}" placeholder="Rua, número, bairro, cidade - UF">
-
-  <p class="note">
-    Este cadastro será automaticamente vinculado ao usuário logado.
-  </p>
-
-  <div class="actions">
-    <button type="submit">Salvar</button>
-    <a class="button" th:href="@{/ui/vantagens}">Cancelar</a>
-  </div>
-</form>
 </body>
 </html>

@@ -2,40 +2,159 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Vantagens Disponíveis</title>
+  <title>Vantagens Disponíveis - Moeda Estudantil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+    .wrap {
+      max-width: 960px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #111827;
+    }
+    .top-actions a {
+      margin-left: 8px;
+      padding: 6px 10px;
+      font-size: .8rem;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      background: #ffffff;
+    }
+    .top-actions a.primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+    }
+    .top-actions a.primary:hover {
+      background: #1d4ed8;
+    }
+    .msg {
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: .8rem;
+      margin-bottom: 12px;
+    }
+    .msg.ok {
+      background: #ecfdf5;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .msg.err {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      box-shadow: 0 10px 25px rgba(15,23,42,.06);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #111827;
+    }
+    .card p {
+      margin: 0;
+      font-size: .8rem;
+      color: #6b7280;
+    }
+    .custo {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #111827;
+    }
+    img.thumb {
+      max-width: 100%;
+      max-height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 2px;
+    }
+    .card form {
+      margin-top: 4px;
+    }
+    .card button {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: .8rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .card button:hover {
+      background: #1d4ed8;
+    }
+    .empty {
+      font-size: .85rem;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+  </style>
 </head>
-<body style="font-family:system-ui, -apple-system, sans-serif;">
-<h2>Vantagens Disponíveis para Resgate</h2>
-
-<div th:if="${msgOk}">
-  <p style="color:green;" th:text="${msgOk}"></p>
-</div>
-<div th:if="${erro}">
-  <p style="color:red;" th:text="${erro}"></p>
-</div>
-
-<div th:if="${#lists.isEmpty(vantagens)}">
-  <p>Nenhuma vantagem disponível no momento.</p>
-</div>
-
-<div th:each="v : ${vantagens}"
-     style="border:1px solid #d1d5db; padding:10px; margin-bottom:10px; max-width:420px;">
-  <h3 th:text="${v.titulo}"></h3>
-  <p th:text="${v.descricao}"></p>
-  <p><strong>Custo:</strong> <span th:text="${v.custo}"></span> moedas</p>
-  <div>
-    <img th:if="${v.fotoUrl}"
-         th:src="'data:image/png;base64,' + ${v.fotoUrl}"
-         style="max-width:200px; max-height:200px;"/>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <h1>Vantagens Disponíveis</h1>
+    <div class="top-actions">
+      <a th:href="@{/ui/minhas-vantagens}">Voltar para minhas vantagens</a>
+      <a class="primary" th:href="@{/logout}">Sair</a>
+    </div>
   </div>
-  <form th:action="@{'/ui/vantagens/' + ${v.id} + '/resgatar'}" method="post">
-    <button type="submit">Resgatar (demo)</button>
-  </form>
-</div>
 
-<p>
-  <a th:href="@{/ui/minhas-vantagens}">Voltar para área do aluno</a> |
-  <a th:href="@{/logout}">Sair</a>
-</p>
+  <div th:if="${msgOk}" class="msg ok" th:text="${msgOk}"></div>
+  <div th:if="${erro}" class="msg err" th:text="${erro}"></div>
+
+  <div th:if="${#lists.isEmpty(vantagens)}" class="empty">
+    Nenhuma vantagem disponível no momento.
+  </div>
+
+  <div class="grid" th:if="${!#lists.isEmpty(vantagens)}">
+    <div class="card" th:each="v : ${vantagens}">
+      <h3 th:text="${v.titulo}">Título</h3>
+      <p th:text="${v.descricao}">Descrição</p>
+      <div class="custo">
+        Custa <span th:text="${v.custo}">0</span> moedas
+      </div>
+
+      <img class="thumb"
+           th:if="${v.fotoUrl != null}"
+           th:src="'data:image/png;base64,' + ${v.fotoUrl}" alt="Imagem da vantagem"/>
+
+      <form th:action="@{'/ui/vantagens/' + ${v.id} + '/resgatar'}" method="post">
+        <button type="submit">Resgatar</button>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>

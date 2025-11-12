@@ -8,6 +8,8 @@ import com.moedaestudantil.domain.repo.CursoRepository;
 import com.moedaestudantil.domain.repo.InstituicaoRepository;
 import com.moedaestudantil.domain.repo.UserRepository;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/ui/alunos")
@@ -37,18 +40,23 @@ public class AlunoViewController {
     }
 
     @GetMapping
-    public String list(Model model, @ModelAttribute("msg") String msg, @ModelAttribute("erro") String erro) {
+    public String list(Model model,
+                       @ModelAttribute("msg") String msg,
+                       @ModelAttribute("erro") String erro) {
         model.addAttribute("alunos", repo.findAll());
-        // os flash attributes "msg" e "erro" já chegam no modelo
         return "alunos/list";
     }
 
     @GetMapping("/novo")
     public String novo(Model model) {
-        model.addAttribute("aluno", new Aluno());
+        Aluno aluno = new Aluno();
+
+        // tenta preencher email automaticamente com usuário logado (caso seja fluxo de auto-cadastro)
+        getUsuarioLogado().ifPresent(u -> aluno.setUser(u));
+
+        model.addAttribute("aluno", aluno);
         model.addAttribute("instituicoes", instRepo.findAll());
         model.addAttribute("cursos", cursoRepo.findAll());
-        model.addAttribute("isEdicao", false);
         return "alunos/form";
     }
 
@@ -58,7 +66,6 @@ public class AlunoViewController {
         model.addAttribute("aluno", aluno);
         model.addAttribute("instituicoes", instRepo.findAll());
         model.addAttribute("cursos", cursoRepo.findAll());
-        model.addAttribute("isEdicao", true);
         return "alunos/form";
     }
 
@@ -69,7 +76,6 @@ public class AlunoViewController {
             repo.deleteById(id);
             ra.addFlashAttribute("msg", "Aluno excluído com sucesso.");
         } catch (DataIntegrityViolationException e) {
-            // Há transações referenciando este aluno (FK constraint)
             ra.addFlashAttribute("erro", "Não é possível excluir: existem registros vinculados (ex.: transações).");
         }
         return "redirect:/ui/alunos";
@@ -80,25 +86,51 @@ public class AlunoViewController {
     public String salvar(@ModelAttribute Aluno aluno,
                          @RequestParam(value = "email", required = false) String email,
                          @RequestParam(value = "senha", required = false) String senha,
-                         Model model,
-                         RedirectAttributes ra) {
+                         RedirectAttributes ra,
+                         Model model) {
 
         boolean criando = (aluno.getId() == null);
 
+        // quem está logado agora?
+        Optional<User> optLogado = getUsuarioLogado();
+
         if (criando) {
-            // criação: email e senha obrigatórios
+
+            // 🔹 Fluxo: usuário ALUNO já está logado e só faltava completar o cadastro
+            if (optLogado.isPresent() && optLogado.get().getRole() == Role.ALUNO) {
+                User u = optLogado.get();
+
+                // se o cara mudar o email no form, atualiza
+                if (StringUtils.hasText(email)) {
+                    u.setEmail(email.trim());
+                }
+
+                // se informar senha, troca; se deixar em branco, mantém
+                if (StringUtils.hasText(senha)) {
+                    u.setSenhaHash("{noop}" + senha);
+                }
+
+                userRepo.save(u);
+
+                aluno.setUser(u);
+                repo.save(aluno);
+
+                ra.addFlashAttribute("msg", "Cadastro de aluno concluído com sucesso.");
+                return "redirect:/ui/minhas-vantagens";
+            }
+
+            // 🔹 Fluxo: criação via painel/adm → precisa criar user junto
             if (!StringUtils.hasText(email) || !StringUtils.hasText(senha)) {
                 model.addAttribute("aluno", aluno);
                 model.addAttribute("instituicoes", instRepo.findAll());
                 model.addAttribute("cursos", cursoRepo.findAll());
-                model.addAttribute("isEdicao", false);
                 model.addAttribute("erro", "Email e senha são obrigatórios ao criar o aluno.");
                 return "alunos/form";
             }
 
             User u = new User();
             u.setEmail(email.trim());
-            u.setSenhaHash("{noop}" + senha); // ajuste para encoder real se tiver
+            u.setSenhaHash("{noop}" + senha);
             u.setRole(Role.ALUNO);
             u.setAtivo(true);
             u.setCriadoEm(Instant.now());
@@ -106,48 +138,56 @@ public class AlunoViewController {
 
             aluno.setUser(u);
             repo.save(aluno);
+
             ra.addFlashAttribute("msg", "Aluno criado com sucesso.");
             return "redirect:/ui/alunos";
-        } else {
-            // edição: manter user existente; e-mail/senha opcionais
-            Aluno original = repo.findById(aluno.getId()).orElseThrow();
-
-            // copiar campos editáveis do formulário
-            original.setNome(aluno.getNome());
-            original.setCpf(aluno.getCpf());
-            original.setRg(aluno.getRg());
-            original.setEndereco(aluno.getEndereco());
-            original.setInstituicao(aluno.getInstituicao());
-            original.setCurso(aluno.getCurso());
-
-            User u = original.getUser();
-            if (u == null) {
-                // Se por acaso o aluno não tinha user ainda, permite criar agora se informou email/senha
-                if (StringUtils.hasText(email) && StringUtils.hasText(senha)) {
-                    u = new User();
-                    u.setEmail(email.trim());
-                    u.setSenhaHash("{noop}" + senha);
-                    u.setRole(Role.ALUNO);
-                    u.setAtivo(true);
-                    u.setCriadoEm(Instant.now());
-                    u = userRepo.save(u);
-                    original.setUser(u);
-                }
-            } else {
-                // Atualizar email se preenchido
-                if (StringUtils.hasText(email)) {
-                    u.setEmail(email.trim());
-                }
-                // Atualizar senha se preenchida
-                if (StringUtils.hasText(senha)) {
-                    u.setSenhaHash("{noop}" + senha);
-                }
-                userRepo.save(u);
-            }
-
-            repo.save(original);
-            ra.addFlashAttribute("msg", "Aluno atualizado com sucesso.");
-            return "redirect:/ui/alunos";
         }
+
+        // 🔹 Edição
+        Aluno original = repo.findById(aluno.getId()).orElseThrow();
+
+        original.setNome(aluno.getNome());
+        original.setCpf(aluno.getCpf());
+        original.setRg(aluno.getRg());
+        original.setEndereco(aluno.getEndereco());
+        original.setInstituicao(aluno.getInstituicao());
+        original.setCurso(aluno.getCurso());
+
+        User u = original.getUser();
+
+        // pode acontecer de não ter user ainda (arrumar aqui também)
+        if (u == null && StringUtils.hasText(email) && StringUtils.hasText(senha)) {
+            u = new User();
+            u.setEmail(email.trim());
+            u.setSenhaHash("{noop}" + senha);
+            u.setRole(Role.ALUNO);
+            u.setAtivo(true);
+            u.setCriadoEm(Instant.now());
+            u = userRepo.save(u);
+            original.setUser(u);
+        } else if (u != null) {
+            if (StringUtils.hasText(email)) {
+                u.setEmail(email.trim());
+            }
+            if (StringUtils.hasText(senha)) {
+                u.setSenhaHash("{noop}" + senha);
+            }
+            userRepo.save(u);
+        }
+
+        repo.save(original);
+        ra.addFlashAttribute("msg", "Aluno atualizado com sucesso.");
+        return "redirect:/ui/minhas-vantagens";
+    }
+
+    // =========== helpers ===========
+
+    private Optional<User> getUsuarioLogado() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()
+                || "anonymousUser".equals(auth.getName())) {
+            return Optional.empty();
+        }
+        return userRepo.findByEmail(auth.getName());
     }
 }
