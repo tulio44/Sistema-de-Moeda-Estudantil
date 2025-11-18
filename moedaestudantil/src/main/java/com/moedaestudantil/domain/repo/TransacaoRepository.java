@@ -10,10 +10,12 @@ import java.util.List;
 
 public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 
-  Page<Transacao> findByOrigemProfessorIdOrderByCriadoEmDesc(Long profId, Pageable p);
+    Page<Transacao> findByOrigemProfessorIdOrderByCriadoEmDesc(Long profId, Pageable p);
 
-  Page<Transacao> findByDestinoAlunoIdOrderByCriadoEmDesc(Long alunoId, Pageable p);
+    Page<Transacao> findByDestinoAlunoIdOrderByCriadoEmDesc(Long alunoId, Pageable p);
 
-  // NOVO: usado pela tela "minhas vantagens"
-  List<Transacao> findByDestinoAlunoAndTipoOrderByCriadoEmDesc(Aluno aluno, TipoTransacao tipo);
+    List<Transacao> findByDestinoAlunoAndTipoOrderByCriadoEmDesc(
+            Aluno aluno,
+            TipoTransacao tipo
+    );
 }

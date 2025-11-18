@@ -1,6 +1,7 @@
 package com.moedaestudantil.config;
 
 import com.moedaestudantil.service.security.AppUserDetailsService;
+import com.moedaestudantil.service.security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final AppUserDetailsService userDetailsService;
-    private final CustomAuthenticationSuccessHandler successHandler;
+    private final LoginSuccessHandler successHandler;
 
     public SecurityConfig(AppUserDetailsService userDetailsService,
-                          CustomAuthenticationSuccessHandler successHandler) {
+                          LoginSuccessHandler successHandler) {
         this.userDetailsService = userDetailsService;
         this.successHandler = successHandler;
     }
@@ -29,44 +30,29 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // públicas
-                .requestMatchers(
-                    "/login",
-                    "/cadastro",
-                    "/h2-console/**",
-                    "/css/**",
-                    "/js/**",
-                    "/img/**",
-                    "/webjars/**"
-                ).permitAll()
+                .requestMatchers("/login", "/cadastro", "/h2-console/**",
+                        "/css/**", "/js/**", "/img/**", "/webjars/**")
+                        .permitAll()
 
-                // aluno
                 .requestMatchers("/ui/minhas-vantagens/**").hasRole("ALUNO")
+                .requestMatchers("/ui/vantagens/disponiveis",
+                                 "/ui/vantagens/*/resgatar").hasRole("ALUNO")
 
-                // vantagens para aluno
-                .requestMatchers(
-                    "/ui/vantagens/disponiveis",
-                    "/ui/vantagens/*/resgatar"
-                ).hasRole("ALUNO")
-
-                // rotas da empresa
                 .requestMatchers("/ui/vantagens/**").hasRole("EMPRESA")
                 .requestMatchers("/ui/empresas/**").hasRole("EMPRESA")
 
-                // demais telas web
                 .requestMatchers("/ui/alunos/**").authenticated()
 
-                // qualquer outra: logado
                 .anyRequest().authenticated()
             )
-            .headers(h -> h.frameOptions(f -> f.disable())) // H2
+            .headers(h -> h.frameOptions(f -> f.disable()))
             .userDetailsService(userDetailsService)
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .successHandler(successHandler) // ✅ ESTE AQUI É O CERTO
+                .successHandler(successHandler)
                 .failureUrl("/login?error")
                 .permitAll()
             )
@@ -85,14 +71,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http,
-                                                       PasswordEncoder passwordEncoder)
-            throws Exception {
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+
         AuthenticationManagerBuilder builder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
-        builder
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder);
+
+        builder.userDetailsService(userDetailsService)
+               .passwordEncoder(passwordEncoder);
+
         return builder.build();
     }
 }

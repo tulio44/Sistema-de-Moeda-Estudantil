@@ -4,7 +4,6 @@ import com.moedaestudantil.domain.model.Empresa;
 import com.moedaestudantil.domain.model.User;
 import com.moedaestudantil.domain.repo.EmpresaRepository;
 import com.moedaestudantil.domain.repo.UserRepository;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,60 +25,61 @@ public class EmpresaViewController {
 
     /**
      * Mostrar / editar cadastro da empresa ligada ao usuário logado.
-     * Cada usuário EMPRESA gerencia apenas a sua empresa.
      */
-@GetMapping
-public String verOuEditarEmpresa(Model model) {
-    User userLogado = getUsuarioLogado();
+    @GetMapping
+    public String verOuEditarEmpresa(Model model) {
+        User userLogado = getUsuarioLogado();
 
-    Empresa empresa = empresaRepository.findByUser(userLogado)
-            .orElseGet(() -> {
-                Empresa e = new Empresa();
-                e.setUser(userLogado);
-                return e;
-            });
+        Empresa empresa = empresaRepository.findByUser(userLogado)
+                .orElseGet(() -> {
+                    Empresa e = new Empresa();
+                    e.setUser(userLogado);
+                    return e;
+                });
 
-    model.addAttribute("empresa", empresa);
-    return "empresas/form";
-}
-
-    /**
-     * Salvar empresa sempre vinculando ao usuário logado,
-     * sem precisar informar userId no formulário.
-     */
-@PostMapping("/salvar")
-public String salvar(@ModelAttribute("empresa") Empresa form,
-                     RedirectAttributes ra) {
-
-    User userLogado = getUsuarioLogado();
-
-    // Verifica se já existe empresa vinculada a este usuário
-    var existenteOpt = empresaRepository.findByUser(userLogado);
-
-    if (existenteOpt.isPresent()) {
-        // Se já existe, garantimos que vamos atualizar ela
-        Empresa existente = existenteOpt.get();
-        form.setId(existente.getId());
+        model.addAttribute("empresa", empresa);
+        return "empresas/form";
     }
 
-    // Garante vínculo com o usuário logado SEM depender de campo no HTML
-    form.setUser(userLogado);
+    /**
+     * Salvar empresa sempre vinculando ao usuário logado e
+     * após salvar → redirecionar para /ui/vantagens.
+     */
+    @PostMapping("/salvar")
+    public String salvar(@ModelAttribute("empresa") Empresa form,
+                         RedirectAttributes ra) {
 
-    empresaRepository.save(form);
+        User userLogado = getUsuarioLogado();
 
-    ra.addFlashAttribute("msgOk", "Dados da empresa salvos com sucesso.");
-    return "redirect:/ui/empresas";
-}
+        // Caso já exista, garantir update (não criar novo)
+        var existenteOpt = empresaRepository.findByUser(userLogado);
 
+        if (existenteOpt.isPresent()) {
+            Empresa existente = existenteOpt.get();
+            form.setId(existente.getId());
+            form.setVersao(existente.getVersao());
+        }
+
+        // Sempre vinculação ao usuário logado
+        form.setUser(userLogado);
+
+        empresaRepository.save(form);
+
+        ra.addFlashAttribute("msgOk", "Dados da empresa salvos com sucesso.");
+
+        // 🔥 Redirecionamento correto após salvar
+        return "redirect:/ui/vantagens";
+    }
 
     /**
-     * Opcional: permitir que a empresa exclua seu cadastro (cuidado na prática).
+     * Excluir cadastro da empresa (opcional).
      */
     @PostMapping("/excluir")
     public String excluir(RedirectAttributes ra) {
         User userLogado = getUsuarioLogado();
 
-        empresaRepository.findByUser(userLogado).ifPresent(empresaRepository::delete);
+        empresaRepository.findByUser(userLogado)
+                .ifPresent(empresaRepository::delete);
 
         ra.addFlashAttribute("msgOk", "Cadastro de empresa excluído.");
         return "redirect:/ui/empresas";
@@ -87,10 +87,11 @@ public String salvar(@ModelAttribute("empresa") Empresa form,
 
     // =============== Helpers ===============
 
-private User getUsuarioLogado() {
-    var auth = SecurityContextHolder.getContext().getAuthentication();
-    String email = auth.getName();
-    return userRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalStateException("Usuário autenticado não encontrado."));
-}
+    private User getUsuarioLogado() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new IllegalStateException("Usuário autenticado não encontrado."));
+    }
 }

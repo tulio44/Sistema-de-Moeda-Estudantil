@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title th:text="${empresa.id == null} ? 'Cadastrar Empresa' : 'Editar Empresa'">Empresa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     * { box-sizing: border-box; }
     body {
@@ -165,13 +166,14 @@
   <div th:if="${msgErro}" class="alert err" th:text="${msgErro}">Erro</div>
   <div th:if="${msgOk}" class="alert ok" th:text="${msgOk}"></div>
 
-  <form th:action="@{/ui/empresas/salvar}" method="post" th:object="${empresa}">
-    <input type="hidden" th:field="*{id}"/>
+<form th:action="@{/ui/empresas/salvar}" method="post" th:object="${empresa}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{versao}">
 
     <div class="grid-2">
       <label>
         CNPJ
-        <input th:field="*{cnpj}" placeholder="00.000.000/0000-00" required>
+        <input id="cnpj" th:field="*{cnpj}" placeholder="00.000.000/0000-00" required>
       </label>
       <label>
         Nome Fantasia / Razão Social
@@ -182,7 +184,7 @@
     <div class="grid-2">
       <label>
         Telefone
-        <input th:field="*{telefone}" placeholder="(00) 00000-0000">
+        <input id="telefone" th:field="*{telefone}" placeholder="(00) 00000-0000">
       </label>
       <label>
         E-mail de contato
@@ -195,15 +197,43 @@
       <input th:field="*{endereco}" placeholder="Rua, número, bairro, cidade - UF">
     </label>
 
-    <div class="note">
-      Este cadastro é automaticamente vinculado ao usuário que está logado.
-    </div>
-
     <div class="actions">
       <button type="submit" class="btn-primary">Salvar</button>
-      <a class="btn-secondary" th:href="@{/ui/vantagens}">Cancelar</a>
     </div>
-  </form>
+</form>
+
 </div>
+
+<!-- ===========================
+     🟦 MÁSCARAS (SIMPLIFICADO)
+=========================== -->
+<script>
+  function mascaraCNPJ(value) {
+    value = value.replace(/\D/g, "");
+    return value
+      .replace(/^(\d{2})(\d)/, "$1.$2")
+      .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+      .replace(/\.(\d{3})(\d)/, ".$1/$2")
+      .replace(/(\d{4})(\d)/, "$1-$2")
+      .substring(0, 18);
+  }
+
+  function mascaraTelefone(value) {
+    value = value.replace(/\D/g, "");
+    return value
+      .replace(/^(\d{2})(\d)/g, "($1) $2")
+      .replace(/(\d{5})(\d)/, "$1-$2")
+      .substring(0, 15);
+  }
+
+  document.getElementById("cnpj").addEventListener("input", function () {
+    this.value = mascaraCNPJ(this.value);
+  });
+
+  document.getElementById("telefone").addEventListener("input", function () {
+    this.value = mascaraTelefone(this.value);
+  });
+</script>
+
 </body>
 </html>
