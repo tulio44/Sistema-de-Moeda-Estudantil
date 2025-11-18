@@ -16,4 +16,8 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
 
   // NOVO: usado pela tela "minhas vantagens"
   List<Transacao> findByDestinoAlunoAndTipoOrderByCriadoEmDesc(Aluno aluno, TipoTransacao tipo);
+
+  // Métodos para extrato simples
+  List<Transacao> findByOrigemProfessorIdOrderByCriadoEmDesc(Long profId);
+  List<Transacao> findByDestinoAlunoIdOrderByCriadoEmDesc(Long alunoId);
 }
