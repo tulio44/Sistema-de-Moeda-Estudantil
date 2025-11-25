@@ -17,9 +17,11 @@ C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Aluno.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\NotificacaoEmail.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Professor.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\TransacaoService.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\AlunoRepository.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\MoedaService.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\UserRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\TransacaoController.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\LoginController.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\enums\Role.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\InstituicaoRepository.java

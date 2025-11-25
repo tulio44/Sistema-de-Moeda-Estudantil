@@ -1,5 +1,6 @@
 com\moedaestudantil\service\EmpresaService.class
 com\moedaestudantil\domain\model\Instituicao.class
+com\moedaestudantil\controller\TransacaoController.class
 com\moedaestudantil\domain\repo\CreditoSemestralRepository.class
 com\moedaestudantil\domain\model\User.class
 com\moedaestudantil\service\security\AppUserDetailsService.class
@@ -7,6 +8,7 @@ com\moedaestudantil\controller\ui\AlunoViewController.class
 com\moedaestudantil\domain\repo\UserRepository.class
 com\moedaestudantil\domain\model\enums\TipoTransacao.class
 com\moedaestudantil\domain\model\NotificacaoEmail.class
+com\moedaestudantil\service\TransacaoService.class
 com\moedaestudantil\controller\LoginController$UserForm.class
 com\moedaestudantil\service\CreditoSemestralService.class
 com\moedaestudantil\App.class

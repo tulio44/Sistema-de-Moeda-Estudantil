@@ -1,8 +1,14 @@
 package com.moedaestudantil.controller.ui;
 
-import com.moedaestudantil.domain.model.*;
-import com.moedaestudantil.domain.model.enums.TipoTransacao;
-import com.moedaestudantil.domain.repo.*;
+import com.moedaestudantil.domain.model.Aluno;
+import com.moedaestudantil.domain.model.Empresa;
+import com.moedaestudantil.domain.model.User;
+import com.moedaestudantil.domain.model.Vantagem;
+import com.moedaestudantil.domain.repo.AlunoRepository;
+import com.moedaestudantil.domain.repo.EmpresaRepository;
+import com.moedaestudantil.domain.repo.UserRepository;
+import com.moedaestudantil.domain.repo.VantagemRepository;
+import com.moedaestudantil.service.MoedaService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.UUID;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/ui/vantagens")
@@ -23,18 +29,18 @@ public class VantagemController {
     private final UserRepository userRepo;
     private final EmpresaRepository empresaRepo;
     private final AlunoRepository alunoRepo;
-    private final TransacaoRepository transacaoRepo;
+    private final MoedaService moedaService;
 
     public VantagemController(VantagemRepository vantagemRepo,
                               UserRepository userRepo,
                               EmpresaRepository empresaRepo,
                               AlunoRepository alunoRepo,
-                              TransacaoRepository transacaoRepo) {
+                              MoedaService moedaService) {
         this.vantagemRepo = vantagemRepo;
         this.userRepo = userRepo;
         this.empresaRepo = empresaRepo;
         this.alunoRepo = alunoRepo;
-        this.transacaoRepo = transacaoRepo;
+        this.moedaService = moedaService;
     }
 
     // ================== ÁREA EMPRESA ==================
@@ -129,14 +135,7 @@ public class VantagemController {
     public String resgatar(@PathVariable Long id,
                            RedirectAttributes ra) {
 
-        // 1. Vantagem válida
-        Vantagem v = vantagemRepo.findById(id).orElse(null);
-        if (v == null || Boolean.FALSE.equals(v.getAtivo())) {
-            ra.addFlashAttribute("erro", "Vantagem inválida ou inativa.");
-            return "redirect:/ui/vantagens/disponiveis";
-        }
-
-        // 2. Usuário logado -> Aluno
+        // Usuário logado -> Aluno
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
@@ -152,34 +151,17 @@ public class VantagemController {
             return "redirect:/ui/vantagens/disponiveis";
         }
 
-        // 3. Verificar saldo
-        int custo = v.getCusto();
-        int saldoAtual = aluno.getSaldo() != null ? aluno.getSaldo() : 0;
-
-        if (saldoAtual < custo) {
-            ra.addFlashAttribute("erro", "Saldo insuficiente. Você tem " + saldoAtual + " moedas.");
-            return "redirect:/ui/vantagens/disponiveis";
+        try {
+            String codigo = moedaService.resgatarVantagem(aluno.getId(), id);
+            Vantagem v = vantagemRepo.findById(id).orElse(null);
+            String titulo = (v != null ? v.getTitulo() : "vantagem");
+            ra.addFlashAttribute("msgOk",
+                    "Vantagem '" + titulo + "' resgatada com sucesso! Código do cupom: " + codigo);
+        } catch (IllegalStateException e) {
+            ra.addFlashAttribute("erro", e.getMessage());
+        } catch (NoSuchElementException e) {
+            ra.addFlashAttribute("erro", "Vantagem ou aluno não encontrado.");
         }
-
-        // 4. Debitar saldo
-        aluno.setSaldo(saldoAtual - custo);
-        alunoRepo.save(aluno);
-
-        // 5. Registrar transação com cupom
-        String codigo = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-
-        Transacao tx = new Transacao();
-        tx.setTipo(TipoTransacao.RESGATE_ALUNO);
-        tx.setDestinoAluno(aluno);
-        tx.setVantagem(v);
-        tx.setQuantidade(custo);
-        tx.setCodigoCupom(codigo);
-        tx.setMensagem("Resgate da vantagem: " + v.getTitulo());
-        transacaoRepo.save(tx);
-
-        // 6. Mensagem
-        ra.addFlashAttribute("msgOk",
-                "Vantagem '" + v.getTitulo() + "' resgatada com sucesso! Código do cupom: " + codigo);
 
         return "redirect:/ui/vantagens/disponiveis";
     }
