@@ -1,125 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>Enviar Moedas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <style>
-        body {
-            margin: 0;
-            background: #f3f4f6;
-            padding: 24px;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        .card {
-            background: white;
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            margin: 0 0 10px;
-            color: #111827;
-            font-size: 20px;
-        }
-
-        label {
-            font-size: 12px;
-            color: #6b7280;
-            display: block;
-            margin-top: 12px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
-            margin-top: 4px;
-            font-size: 14px;
-        }
-
-        textarea {
-            height: 70px;
-            resize: none;
-        }
-
-        button {
-            margin-top: 16px;
-            width: 100%;
-            padding: 10px;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        button:hover {
-            background: #2563eb;
-        }
-
-        .alert {
-            margin-bottom: 12px;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-
-        .alert.ok {
-            background: #ecfdf5;
-            border: 1px solid #bbf7d0;
-            color: #166534;
-        }
-
-        .alert.err {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #b91c1c;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/professores-enviar.css">
 </head>
-
 <body>
-
-<div class="card">
-
-    <h1>Enviar Moedas</h1>
-    <p style="margin:0; color:#6b7280;">Saldo atual: <b th:text="${professor.saldo}"></b> moedas</p>
-
-    <div th:if="${msgOk}" class="alert ok" th:text="${msgOk}"></div>
-    <div th:if="${msgErro}" class="alert err" th:text="${msgErro}"></div>
-
-    <form th:action="@{/ui/professores/enviar}" method="post">
-
-        <label>Selecione o aluno</label>
-        <select name="alunoId" required>
-            <option value="">Selecione...</option>
-            <option th:each="a : ${alunos}"
-                    th:value="${a.id}"
-                    th:text="${a.nome + ' (' + a.curso.nome + ')'}">
-            </option>
-        </select>
-
-        <label>Quantidade</label>
-        <input type="number" name="quantidade" min="1" placeholder="Ex: 50" required>
-
-        <label>Motivo</label>
-        <textarea name="motivo" placeholder="Ex: Excelente participação em aula" required></textarea>
-
-        <button type="submit">Enviar</button>
-
-    </form>
-</div>
-
+    <div class="header">
+        <div class="profile">
+            <div class="profile-icon"><span>&#128100;</span></div>
+            <span th:text="${professor.nome}"></span>
+        </div>
+        <button class="logout-btn" th:onclick="|window.location='@{/logout}'|">Sair</button>
+    </div>
+    <div class="container">
+        <div class="card">
+                <div style="margin-bottom: 10px;">
+                    <a href="/ui/professores" style="color:#2563eb;text-decoration:underline;font-size:15px;font-weight:500;">&larr; Voltar para a Home</a>
+                </div>
+                <h1>Enviar Moedas</h1>
+                <p class="saldo">Saldo atual: <b th:text="${professor.saldo}"></b> moedas</p>
+                <div th:if="${msgOk}" class="alert ok" th:text="${msgOk}"></div>
+                <div th:if="${msgErro}" class="alert err" th:text="${msgErro}"></div>
+                <form th:action="@{/ui/professores/enviar}" method="post">
+                    <div class="form-group">
+                        <label for="alunoId">Selecione o aluno</label>
+                        <select name="alunoId" id="alunoId" required>
+                            <option value="">Selecione...</option>
+                            <option th:each="a : ${alunos}"
+                                    th:value="${a.id}"
+                                    th:text="${a.nome + ' (' + a.curso.nome + ')'}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade</label>
+                        <input type="number" name="quantidade" id="quantidade" min="1" placeholder="Ex: 50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo</label>
+                        <textarea name="motivo" id="motivo" placeholder="Ex: Excelente participação em aula" required></textarea>
+                    </div>
+                    <button type="submit">Enviar</button>
+                </form>
+        </div>
+    </div>
 </body>
 </html>
