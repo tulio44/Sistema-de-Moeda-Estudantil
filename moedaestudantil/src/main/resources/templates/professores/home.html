@@ -5,112 +5,32 @@
     <title>Área do Professor - Moeda Estudantil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f3f4f6;
-        }
-
-        .wrap {
-            max-width: 900px;
-            margin: 32px auto;
-            padding: 0 16px;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            color: #111827;
-        }
-
-        .hello {
-            margin: 4px 0 0;
-            color: #4b5563;
-            font-size: .9rem;
-        }
-
-        .top-actions a {
-            margin-left: 8px;
-            padding: 7px 12px;
-            font-size: .8rem;
-            text-decoration: none;
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
-            color: #374151;
-            background: #ffffff;
-        }
-
-        .top-actions a.primary {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #ffffff;
-        }
-
-        .top-actions a:hover { background: #f3f4f6; }
-        .top-actions a.primary:hover { background: #1d4ed8; }
-
-        .card {
-            background: #ffffff;
-            padding: 20px 22px;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(15,23,42,.06);
-            margin-bottom: 20px;
-        }
-
-        .menu-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .menu-buttons a {
-            flex: 1;
-            text-align: center;
-            padding: 12px 0;
-            background: #2563eb;
-            color: white;
-            border-radius: 8px;
-            font-weight: 500;
-            text-decoration: none;
-            font-size: .9rem;
-        }
-
-        .menu-buttons a:hover {
-            background: #1d4ed8;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/professores-home.css">
 </head>
 
 <body>
-<div class="wrap">
-
-    <div class="topbar">
-        <div>
-            <h1>Área do Professor</h1>
-            <p class="hello" th:text="'Olá, ' + ${professor.nome} + '!'"></p>
+    <div class="header">
+        <div class="profile">
+            <div class="profile-icon">
+                <span>&#128100;</span>
+            </div>
+            <span th:text="${professor.nome}"></span>
         </div>
-        <div class="top-actions">
-            <a th:href="@{/logout}">Sair</a>
+        <button class="logout-btn" th:onclick="|window.location='@{/logout}'|">Sair</button>
+    </div>
+    <div class="wrap">
+        <h1>Área do Professor</h1>
+        <p class="hello" th:text="'Olá, ' + ${professor.nome} + '!'" ></p>
+        <div class="card-actions">
+            <a class="action-card" th:href="@{/ui/professores/enviar}">
+                <div class="action-icon">&#x1F4B0;</div>
+                <div class="action-title">Enviar Moedas</div>
+            </a>
+            <a class="action-card" th:href="@{/ui/professores/extrato}">
+                <div class="action-icon">&#128196;</div>
+                <div class="action-title">Ver Extrato</div>
+            </a>
         </div>
     </div>
-
-    <div class="card">
-        <h2 style="margin:0 0 12px; font-size:1.2rem; color:#111827;">Ações</h2>
-
-        <div class="menu-buttons">
-            <a th:href="@{/ui/professores/enviar}">Enviar Moedas</a>
-            <a th:href="@{/ui/professores/extrato}">Ver Extrato</a>
-        </div>
-    </div>
-
-</div>
 </body>
 </html>
