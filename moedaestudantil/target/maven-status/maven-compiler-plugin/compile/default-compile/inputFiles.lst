@@ -1,39 +1,40 @@
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\enums\Role.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\InstituicaoRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Instituicao.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\config\CustomAuthenticationSuccessHandler.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\CursoRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\security\AppUserDetailsService.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Vantagem.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\VantagemController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\EmpresaViewController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\NotificacaoEmailRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\security\LoginSuccessHandler.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\TransacaoRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\App.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\LoginController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\UserRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Aluno.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\CreditoSemestral.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Curso.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Empresa.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\User.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\MoedaService.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\NotificacaoEmail.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\Bootstrap.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\AlunoAreaController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\enums\TipoTransacao.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Professor.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\EmpresaRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\VantagemRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\AlunoService.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\AlunoViewController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\EmpresaService.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\config\SecurityConfig.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\EmpresaController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\AlunoController.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\ProfessorRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\CreditoSemestralService.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\AlunoRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\CreditoSemestralRepository.java
-C:\Users\Túlio Henrique\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Transacao.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\EmpresaService.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\enums\TipoTransacao.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Transacao.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\EmpresaController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\EmpresaViewController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\User.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\CreditoSemestralService.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\Bootstrap.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\AlunoController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\VantagemRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Curso.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\VantagemController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\CreditoSemestralRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\security\AppUserDetailsService.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\CursoRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\TransacaoRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Aluno.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\NotificacaoEmail.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Professor.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\AlunoRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\MoedaService.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\UserRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\LoginController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\enums\Role.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\InstituicaoRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\App.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\AlunoService.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Vantagem.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Instituicao.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\AlunoAreaController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\config\SecurityConfig.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\EmpresaRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\AlunoViewController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Empresa.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\ProfessorViewController.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\security\AppUserDetails.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\security\LoginSuccessHandler.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\CreditoSemestral.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\NotificacaoEmailRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\ProfessorRepository.java

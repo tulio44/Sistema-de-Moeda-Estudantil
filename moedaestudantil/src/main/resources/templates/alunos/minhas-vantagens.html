@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Minhas Vantagens - Moeda Estudantil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -26,6 +27,11 @@
       margin: 0;
       font-size: 1.6rem;
       color: #111827;
+    }
+    .hello {
+      font-size: .95rem;
+      color: #4b5563;
+      margin: 0 0 4px;
     }
     .top-actions a {
       margin-left: 8px;
@@ -54,11 +60,6 @@
       padding: 16px 18px;
       box-shadow: 0 10px 25px rgba(15,23,42,.06);
       margin-bottom: 18px;
-    }
-    .hello {
-      font-size: .95rem;
-      color: #4b5563;
-      margin: 0 0 4px;
     }
     .saldo-label {
       font-size: .78rem;
@@ -96,6 +97,7 @@
     }
   </style>
 </head>
+
 <body>
 <div class="wrap">
 
@@ -104,8 +106,10 @@
       <h1>Minhas Vantagens</h1>
       <p class="hello" th:text="'Olá, ' + ${aluno.nome} + '!'">Olá, Aluno!</p>
     </div>
+
     <div class="top-actions">
       <a class="primary" th:href="@{/ui/vantagens/disponiveis}">Ver vantagens disponíveis</a>
+      <a th:href="@{/ui/alunos/extrato}">Ver meu extrato</a>
       <a th:href="@{/logout}">Sair</a>
     </div>
   </div>
@@ -135,7 +139,7 @@
       <tbody>
       <tr th:each="tx : ${resgates}">
         <td th:text="${#temporals.format(tx.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</td>
-        <td th:text="${tx.vantagem != null} ? ${tx.vantagem.titulo} : 'Crédito / Ajuste'">Título</td>
+        <td th:text="${tx.vantagem != null ? tx.vantagem.titulo : 'Crédito / Ajuste'}">Título</td>
         <td th:text="${tx.quantidade} + ' moedas'">0 moedas</td>
       </tr>
       </tbody>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Extrato do Professor - Moeda Estudantil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f3f4f6;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 32px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .back-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .saldo {
+            margin: 14px 0 18px;
+            font-size: 17px;
+            color: #111827;
+            font-weight: 500;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #374151;
+            padding: 12px 10px;
+            font-size: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 12px 10px;
+            font-size: 14px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .green { color: #059669; font-weight: 600; }
+        .red { color: #dc2626; font-weight: 600; }
+
+        .empty {
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Extrato do Professor</h1>
+
+    <a th:href="@{/ui/professores}" class="back-link">⬅ Voltar para Área do Professor</a>
+
+    <div class="saldo">
+        Saldo atual: <strong th:text="${professor.saldo}"></strong> moedas
+    </div>
+
+    <div class="card">
+
+        <table>
+            <thead>
+            <tr>
+                <th>Aluno</th>
+                <th>Qtd</th>
+                <th>Motivo</th>
+                <th>Data</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <!-- Caso esteja vazio -->
+            <tr th:if="${extrato.content.isEmpty()}">
+                <td colspan="4" class="empty">Nenhuma transação encontrada.</td>
+            </tr>
+
+            <!-- Lista de transações -->
+            <tr th:each="tx : ${extrato.content}">
+                
+                <td th:text="${tx.destinoAluno != null ? tx.destinoAluno.nome : '-'}"></td>
+
+                <!-- COR COLORIDA + prefixo -->
+                <td th:classappend="${tx.tipo == T(com.moedaestudantil.domain.model.enums.TipoTransacao).ENVIO_PROFESSOR} ? 'green' : 'red'"
+                    th:text="${tx.tipo == T(com.moedaestudantil.domain.model.enums.TipoTransacao).ENVIO_PROFESSOR} 
+                             ? '+' + tx.quantidade 
+                             : '-' + tx.quantidade">
+                </td>
+
+                <td th:text="${tx.mensagem}"></td>
+
+                <td th:text="${#temporals.format(tx.criadoEm, 'dd/MM/yyyy HH:mm')}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -111,7 +111,7 @@
 <div class="box">
   <h2>Criar acesso</h2>
   <p class="subtitle">
-    Use seu e-mail e escolha se o acesso será de Aluno ou Empresa.
+    Use seu e-mail e escolha o tipo de conta.
   </p>
 
   <div th:if="${erro}" class="alert error" th:text="${erro}"></div>
@@ -129,6 +129,7 @@
       <option value="">Selecione...</option>
       <option value="ALUNO">Aluno</option>
       <option value="EMPRESA">Empresa</option>
+      <option value="PROFESSOR">Professor</option> <!--  ADICIONADO  -->
     </select>
 
     <button type="submit">Cadastrar</button>
