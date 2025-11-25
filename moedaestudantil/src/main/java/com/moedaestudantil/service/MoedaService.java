@@ -36,8 +36,10 @@ public class MoedaService {
         if (qtd <= 0) throw new IllegalArgumentException("qtd inválida");
         if (motivo == null || motivo.isBlank()) throw new IllegalArgumentException("motivo obrigatório");
 
+        if (professorId == null) throw new IllegalArgumentException("ID do professor não pode ser nulo");
         Professor prof = profRepo.findById(professorId)
                 .orElseThrow(() -> new NoSuchElementException("Professor não encontrado: " + professorId));
+        if (alunoId == null) throw new IllegalArgumentException("ID do aluno não pode ser nulo");
         Aluno aluno = alunoRepo.findById(alunoId)
                 .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado: " + alunoId));
 
@@ -72,8 +74,10 @@ public class MoedaService {
 
     @Transactional
     public String resgatarVantagem(Long alunoId, Long vantagemId) {
+        if (alunoId == null) throw new IllegalArgumentException("ID do aluno não pode ser nulo");
         Aluno aluno = alunoRepo.findById(alunoId)
                 .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado: " + alunoId));
+        if (vantagemId == null) throw new IllegalArgumentException("ID da vantagem não pode ser nulo");
         Vantagem v = vantRepo.findById(vantagemId)
                 .orElseThrow(() -> new NoSuchElementException("Vantagem não encontrada: " + vantagemId));
 

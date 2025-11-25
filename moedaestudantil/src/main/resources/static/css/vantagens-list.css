@@ -1,0 +1,163 @@
+/* moedaestudantil/static/css/vantagens-list.css */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f3f4f6;
+  margin: 0;
+  padding: 0;
+}
+.header {
+  background: #2563eb;
+  color: #fff;
+  padding: 18px 0 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+.header .profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 32px;
+}
+.header .profile-icon {
+  font-size: 1.5em;
+  background: #fff;
+  color: #2563eb;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header .profile span {
+  font-weight: 500;
+  font-size: 1.1em;
+}
+.header .logout-btn {
+  margin-right: 32px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 1em;
+  cursor: pointer;
+}
+.header .logout-btn:hover {
+  background: #b91c1c;
+}
+.wrap {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(15,23,42,.06);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+.top-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.top-actions a.button {
+  background: #2563eb;
+  color: #fff;
+  border-radius: 6px;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background .2s;
+}
+.top-actions a.button:hover {
+  background: #1d4ed8;
+}
+.top-actions a.button[style*="background:#6b7280"] {
+  background: #6b7280 !important;
+}
+.top-actions a.button[style*="background:#ef4444"] {
+  background: #ef4444 !important;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+th, td {
+  padding: 12px 10px;
+  text-align: left;
+  font-size: 14px;
+  vertical-align: middle;
+}
+th {
+  background: #f9fafb;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+tr {
+  background: white;
+  border-bottom: 1px solid #f3f4f6;
+}
+tr:hover {
+  background: #f9fafb;
+}
+.thumb-yt {
+  width: 160px;
+  height: 90px;
+  background: #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  display: block;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  border: 1px solid #d1d5db;
+}
+.thumb-yt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.actions a,
+.actions button {
+  font-size: 12px;
+  margin-right: 8px;
+}
+.actions button {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.actions button:hover {
+  background: #b91c1c;
+}
+.alert {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.alert.success {
+  background: #ecfdf5;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+.alert.error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+@media (max-width: 700px) {
+  .wrap, .container { padding: 0 4px; }
+  .card { padding: 12px; }
+  .header { flex-direction: column; align-items: flex-start; padding: 14px 0; }
+  .header .profile { margin-left: 12px; }
+  .header .logout-btn { margin-right: 12px; margin-top: 8px; }
+}

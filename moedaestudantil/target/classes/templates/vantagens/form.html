@@ -4,144 +4,49 @@
   <meta charset="UTF-8">
   <title th:text="${vantagem.id} != null ? 'Editar Vantagem' : 'Nova Vantagem'">Vantagem</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 0;
-    }
-    .wrap {
-      max-width: 720px;
-      margin: 32px auto;
-      padding: 0 16px;
-    }
-    h1 {
-      margin: 0 0 14px;
-      font-size: 1.5rem;
-      color: #111827;
-    }
-    form {
-      background: #ffffff;
-      padding: 16px 18px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(15,23,42,.06);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: .85rem;
-    }
-    label span {
-      display:block;
-      margin-bottom:3px;
-      color:#374151;
-      font-weight:500;
-      font-size:.8rem;
-    }
-    input[type="text"],
-    input[type="number"],
-    textarea {
-      width: 100%;
-      padding: 7px 8px;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      font-size: .85rem;
-      color: #111827;
-      box-sizing: border-box;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-    input:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px rgba(37,99,235,.1);
-    }
-    input[type="file"] {
-      font-size: .78rem;
-    }
-    .checkline {
-      display:flex;
-      align-items:center;
-      gap:6px;
-      font-size:.8rem;
-      color:#374151;
-      margin-top:4px;
-    }
-    .actions {
-      display:flex;
-      gap:8px;
-      margin-top:6px;
-    }
-    button,
-    a.button {
-      padding: 7px 12px;
-      border-radius: 6px;
-      border: none;
-      font-size: .8rem;
-      cursor: pointer;
-      text-decoration: none;
-      display:inline-block;
-    }
-    button {
-      background: #2563eb;
-      color: #ffffff;
-      font-weight: 500;
-    }
-    button:hover {
-      background: #1d4ed8;
-    }
-    a.button {
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: #374151;
-    }
-    a.button:hover {
-      background: #f3f4f6;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/vantagens-form.css">
 </head>
 <body>
+<div class="header">
+  <div class="profile" style="display:flex;align-items:center;gap:10px;">
+    <a th:href="@{/ui/empresas}" style="display:flex;align-items:center;text-decoration:none;color:inherit;gap:10px;">
+      <div class="profile-icon"><span>&#128188;</span></div>
+      <span>Empresa</span>
+    </a>
+  </div>
+  <button class="logout-btn" th:onclick="|window.location='@{/logout}'|" style="margin-right:32px;">Sair</button>
+</div>
 <div class="wrap">
   <h1 th:text="${vantagem.id} != null ? 'Editar Vantagem' : 'Nova Vantagem'">Nova Vantagem</h1>
-
   <form th:action="@{/ui/vantagens/salvar}"
         th:object="${vantagem}"
         method="post"
         enctype="multipart/form-data">
-
     <input type="hidden" th:field="*{id}"/>
-
     <label>
       <span>Título</span>
       <input type="text" th:field="*{titulo}" required>
     </label>
-
     <label>
       <span>Descrição</span>
       <textarea th:field="*{descricao}" required></textarea>
     </label>
-
     <label>
       <span>Custo em moedas</span>
       <input type="number" th:field="*{custo}" min="1" required>
     </label>
-
     <label>
       <span>Imagem (opcional)</span>
       <input type="file" name="imagemArquivo" accept="image/*">
     </label>
-
     <div class="checkline">
       <input type="checkbox" th:field="*{ativo}" id="ativo">
       <label for="ativo" style="margin:0; font-weight:400;">Vantagem ativa</label>
     </div>
-
     <div class="actions">
       <button type="submit">Salvar</button>
       <a class="button" th:href="@{/ui/vantagens}">Cancelar</a>
+      <a class="button" th:href="@{/ui/vantagens}" style="margin-left:auto;background:#f3f4f6;">Voltar</a>
     </div>
   </form>
 </div>

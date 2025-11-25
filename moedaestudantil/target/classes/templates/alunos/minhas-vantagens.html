@@ -5,147 +5,59 @@
   <title>Minhas Vantagens - Moeda Estudantil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <style>
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 0;
-    }
-    .wrap {
-      max-width: 960px;
-      margin: 32px auto;
-      padding: 0 16px;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      color: #111827;
-    }
-    .hello {
-      font-size: .95rem;
-      color: #4b5563;
-      margin: 0 0 4px;
-    }
-    .top-actions a {
-      margin-left: 8px;
-      padding: 6px 10px;
-      font-size: .8rem;
-      text-decoration: none;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      color: #374151;
-      background: #ffffff;
-    }
-    .top-actions a.primary {
-      background: #2563eb;
-      border-color: #2563eb;
-      color: #ffffff;
-    }
-    .top-actions a:hover {
-      background: #f3f4f6;
-    }
-    .top-actions a.primary:hover {
-      background: #1d4ed8;
-    }
-    .card {
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 16px 18px;
-      box-shadow: 0 10px 25px rgba(15,23,42,.06);
-      margin-bottom: 18px;
-    }
-    .saldo-label {
-      font-size: .78rem;
-      color: #9ca3af;
-    }
-    .saldo-value {
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #111827;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .8rem;
-      margin-top: 8px;
-    }
-    th, td {
-      padding: 8px 6px;
-      border-bottom: 1px solid #e5e7eb;
-      text-align: left;
-    }
-    th {
-      font-weight: 600;
-      color: #6b7280;
-      font-size: .75rem;
-      text-transform: uppercase;
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    .empty {
-      padding: 8px 0;
-      font-size: .8rem;
-      color: #9ca3af;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/alunos-vantagens.css">
 </head>
 
 <body>
-<div class="wrap">
-
-  <div class="topbar">
-    <div>
-      <h1>Minhas Vantagens</h1>
-      <p class="hello" th:text="'Olá, ' + ${aluno.nome} + '!'">Olá, Aluno!</p>
+    <div class="header">
+        <div class="profile">
+            <div class="profile-icon"><span>&#128100;</span></div>
+            <span th:text="${aluno.nome}"></span>
+        </div>
+        <button class="logout-btn" th:onclick="|window.location='@{/logout}'|">Sair</button>
     </div>
-
-    <div class="top-actions">
-      <a class="primary" th:href="@{/ui/vantagens/disponiveis}">Ver vantagens disponíveis</a>
-      <a th:href="@{/ui/alunos/extrato}">Ver meu extrato</a>
-      <a th:href="@{/logout}">Sair</a>
+    <div class="wrap">
+        <h1>Minhas Vantagens</h1>
+        <p class="hello" th:text="'Olá, ' + ${aluno.nome} + '!'">Olá, Aluno!</p>
+        <div class="card saldo-card" style="margin-bottom:32px;">
+            <div class="saldo-icon">&#x1F4B0;</div>
+            <div class="saldo-info">
+                <div class="saldo-label">Saldo disponível</div>
+                <div class="saldo-value"><span th:text="${saldo}">0</span> moedas</div>
+            </div>
+        </div>
+        <div class="card-actions" style="margin-bottom:32px;">
+            <a class="action-card" th:href="@{/ui/vantagens/disponiveis}">
+                <div class="action-icon">&#127942;</div>
+                <div class="action-title">Vantagens Disponíveis</div>
+            </a>
+            <a class="action-card" th:href="@{/ui/alunos/extrato}">
+                <div class="action-icon">&#128196;</div>
+                <div class="action-title">Ver Extrato</div>
+            </a>
+        </div>
+        <div class="card resgatadas-card">
+            <h2>Vantagens resgatadas</h2>
+            <div th:if="${#lists.isEmpty(resgates)}" class="empty">
+                Nenhum resgate realizado até agora.
+            </div>
+            <table th:if="${!#lists.isEmpty(resgates)}">
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Vantagem</th>
+                    <th>Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tx : ${resgates}">
+                    <td th:text="${#temporals.format(tx.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</td>
+                    <td th:text="${tx.vantagem != null ? tx.vantagem.titulo : 'Crédito / Ajuste'}">Título</td>
+                    <td th:text="${tx.quantidade} + ' moedas'">0 moedas</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="saldo-label">Saldo disponível</div>
-    <div class="saldo-value">
-      <span th:text="${saldo}">0</span> moedas
-    </div>
-  </div>
-
-  <div class="card">
-    <h2 style="margin:0 0 6px; font-size:1rem; color:#111827;">Vantagens resgatadas</h2>
-
-    <div th:if="${#lists.isEmpty(resgates)}" class="empty">
-      Nenhum resgate realizado até agora.
-    </div>
-
-    <table th:if="${!#lists.isEmpty(resgates)}">
-      <thead>
-      <tr>
-        <th>Data</th>
-        <th>Vantagem</th>
-        <th>Valor</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="tx : ${resgates}">
-        <td th:text="${#temporals.format(tx.criadoEm, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</td>
-        <td th:text="${tx.vantagem != null ? tx.vantagem.titulo : 'Crédito / Ajuste'}">Título</td>
-        <td th:text="${tx.quantidade} + ' moedas'">0 moedas</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
-</div>
 </body>
 </html>

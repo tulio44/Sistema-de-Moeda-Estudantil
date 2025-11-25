@@ -61,6 +61,7 @@ public class VantagemController {
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes ra) {
         Empresa empresa = getEmpresaLogada();
+        if (id == null) throw new IllegalArgumentException("ID da vantagem não pode ser nulo");
         Vantagem v = vantagemRepo.findById(id).orElse(null);
         if (v == null || !v.getEmpresa().getId().equals(empresa.getId())) {
             ra.addFlashAttribute("erro", "Vantagem não encontrada.");
@@ -83,7 +84,9 @@ public class VantagemController {
             alvo.setEmpresa(empresa);
             alvo.setAtivo(true);
         } else {
-            alvo = vantagemRepo.findById(vantagem.getId()).orElse(null);
+            Long vid = vantagem.getId();
+            if (vid == null) throw new IllegalArgumentException("ID da vantagem não pode ser nulo");
+            alvo = vantagemRepo.findById(vid).orElse(null);
             if (alvo == null || !alvo.getEmpresa().getId().equals(empresa.getId())) {
                 ra.addFlashAttribute("erro", "Vantagem inválida.");
                 return "redirect:/ui/vantagens";
@@ -113,6 +116,7 @@ public class VantagemController {
     @PostMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id, RedirectAttributes ra) {
         Empresa empresa = getEmpresaLogada();
+        if (id == null) throw new IllegalArgumentException("ID da vantagem não pode ser nulo");
         Vantagem v = vantagemRepo.findById(id).orElse(null);
         if (v == null || !v.getEmpresa().getId().equals(empresa.getId())) {
             ra.addFlashAttribute("erro", "Vantagem inválida.");
@@ -127,6 +131,14 @@ public class VantagemController {
 
     @GetMapping("/disponiveis")
     public String listarDisponiveis(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User u = userRepo.findByEmail(email).orElse(null);
+        Aluno aluno = null;
+        if (u != null) {
+            aluno = alunoRepo.findByUser(u).orElse(null);
+        }
+        model.addAttribute("aluno", aluno);
         model.addAttribute("vantagens", vantagemRepo.findByAtivoTrue());
         return "vantagens/disponiveis";
     }
@@ -153,6 +165,7 @@ public class VantagemController {
 
         try {
             String codigo = moedaService.resgatarVantagem(aluno.getId(), id);
+            if (id == null) throw new IllegalArgumentException("ID da vantagem não pode ser nulo");
             Vantagem v = vantagemRepo.findById(id).orElse(null);
             String titulo = (v != null ? v.getTitulo() : "vantagem");
             ra.addFlashAttribute("msgOk",

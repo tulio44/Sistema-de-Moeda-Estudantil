@@ -1,0 +1,168 @@
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 0;
+}
+.header {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+.header .profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.header .profile-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563eb;
+    font-size: 1.3rem;
+}
+.header .logout-btn {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-size: .95rem;
+    cursor: pointer;
+    margin-left: 16px;
+}
+.wrap {
+    max-width: 960px;
+    margin: 32px auto;
+    padding: 0 16px;
+}
+.hello {
+    font-size: 1.1rem;
+    color: #2563eb;
+    margin: 0 0 8px;
+    font-weight: 500;
+}
+.card-actions {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+}
+.action-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(15,23,42,.08);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow .2s;
+    cursor: pointer;
+    text-decoration: none;
+}
+.action-card:hover {
+    box-shadow: 0 8px 32px rgba(37,99,235,.13);
+    background: #f3f4f6;
+}
+.action-icon {
+    font-size: 2.8rem;
+    margin-bottom: 18px;
+    color: #2563eb;
+}
+.action-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #111827;
+}
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(15,23,42,.08);
+    padding: 24px 20px;
+    margin-bottom: 18px;
+}
+.saldo-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+.saldo-icon {
+    font-size: 2.2rem;
+    color: #fbbf24;
+    background: #fef3c7;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(251,191,36,0.08);
+}
+.saldo-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.saldo-label {
+    font-size: .95rem;
+    color: #9ca3af;
+}
+.saldo-value {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #111827;
+}
+.resgatadas-card h2 {
+    margin:0 0 6px; font-size:1rem; color:#111827;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+    margin-top: 8px;
+}
+th, td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+th {
+    font-weight: 600;
+    color: #6b7280;
+    font-size: .85rem;
+    text-transform: uppercase;
+}
+tr:last-child td {
+    border-bottom: none;
+}
+.empty {
+    padding: 8px 0;
+    font-size: .9rem;
+    color: #9ca3af;
+}
+@media (max-width: 700px) {
+    .wrap {
+        max-width: 100%;
+        padding: 0 8px;
+    }
+    .card-actions {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .action-card {
+        padding: 24px 12px;
+    }
+    .saldo-card {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
