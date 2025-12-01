@@ -28,6 +28,11 @@
   </dependencyManagement>
 
   <dependencies>
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+  </dependency>
+
     <!-- Web / MVC -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
