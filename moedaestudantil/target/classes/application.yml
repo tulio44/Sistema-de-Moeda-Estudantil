@@ -19,8 +19,8 @@ spring:
     from: sis.moedaestudantil@gmail.com   # ← REMETENTE VALIDADO NO MAILJET
     host: in-v3.mailjet.com     # CORRETO para SMTP Mailjet
     port: 587
-    username: 70a239aa806381c31cec0fc9ef01513a    # sua API KEY
-    password: 675d2766be0417d18d0c55e3b70ec10a    # sua SECRET KEY
+    username:
+    password:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
