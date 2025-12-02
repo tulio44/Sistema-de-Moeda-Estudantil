@@ -24,6 +24,7 @@ C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\TransacaoController.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\LoginController.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\enums\Role.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\EmailService.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\InstituicaoRepository.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\App.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\AlunoService.java
@@ -32,6 +33,7 @@ C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\AlunoAreaController.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\config\SecurityConfig.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\repo\EmpresaRepository.java
+C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\service\NotificacaoEmailService.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\AlunoViewController.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\domain\model\Empresa.java
 C:\Users\tulio\Documents\GitHub\Sistema-de-Moeda-Estudantil\moedaestudantil\src\main\java\com\moedaestudantil\controller\ui\ProfessorViewController.java

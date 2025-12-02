@@ -16,16 +16,14 @@ spring:
       enabled: true
 
   mail:
-    host: smtp.gmail.com
+    from: sis.moedaestudantil@gmail.com   # ← REMETENTE VALIDADO NO MAILJET
+    host: in-v3.mailjet.com     # CORRETO para SMTP Mailjet
     port: 587
-    username: sis.moedaestudantil@gmail.com
-    password: SUA_SENHA_DE_APP_AQUI
+    username: 70a239aa806381c31cec0fc9ef01513a    # sua API KEY
+    password: 675d2766be0417d18d0c55e3b70ec10a    # sua SECRET KEY
     properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
 
 server:
   port: 8080
