@@ -40,8 +40,10 @@ public class Transacao {
     @Column(name = "criado_em", nullable = false, updatable = false)
     private Instant criadoEm = Instant.now();
 
-    // getters e setters
-
+    // Construtor padrão protegido para JPA
+    protected Transacao() {}
+    
+    // Getters e Setters (mantidos para JPA/Compatibilidade)
     public Long getId() { return id; }
 
     public TipoTransacao getTipo() { return tipo; }
@@ -67,4 +69,63 @@ public class Transacao {
 
     public Instant getCriadoEm() { return criadoEm; }
     public void setCriadoEm(Instant criadoEm) { this.criadoEm = criadoEm; }
+    
+    // ===================================
+    // ✨ IMPLEMENTAÇÃO DO BUILDER PATTERN
+    // ===================================
+    
+    /** Ponto de entrada do Builder. */
+    public static TransacaoBuilder builder(TipoTransacao tipo) {
+        return new TransacaoBuilder(tipo);
+    }
+
+    public static class TransacaoBuilder {
+        private final Transacao instance;
+
+        /** Inicializa o Builder com o tipo de transação (obrigatório). */
+        public TransacaoBuilder(TipoTransacao tipo) {
+            this.instance = new Transacao();
+            this.instance.setTipo(tipo);
+            this.instance.setCriadoEm(Instant.now());
+        }
+
+        public TransacaoBuilder origemProfessor(Professor origemProfessor) {
+            this.instance.setOrigemProfessor(origemProfessor);
+            return this;
+        }
+
+        public TransacaoBuilder destinoAluno(Aluno destinoAluno) {
+            this.instance.setDestinoAluno(destinoAluno);
+            return this;
+        }
+
+        public TransacaoBuilder vantagem(Vantagem vantagem) {
+            this.instance.setVantagem(vantagem);
+            return this;
+        }
+
+        public TransacaoBuilder quantidade(Integer quantidade) {
+            this.instance.setQuantidade(quantidade);
+            return this;
+        }
+
+        public TransacaoBuilder mensagem(String mensagem) {
+            this.instance.setMensagem(mensagem);
+            return this;
+        }
+
+        public TransacaoBuilder codigoCupom(String codigoCupom) {
+            this.instance.setCodigoCupom(codigoCupom);
+            return this;
+        }
+
+        /** Cria e retorna a instância de Transacao com os parâmetros definidos. */
+        public Transacao build() {
+            // Garante campos básicos
+            if (this.instance.getTipo() == null || this.instance.getQuantidade() == null || this.instance.getQuantidade() <= 0) {
+                throw new IllegalStateException("Transacao inválida: tipo e quantidade são obrigatórios e positivos.");
+            }
+            return this.instance;
+        }
+    }
 }
