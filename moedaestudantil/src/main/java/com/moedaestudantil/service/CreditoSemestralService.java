@@ -49,12 +49,12 @@ public class CreditoSemestralService {
         int qtd = 1000;
         prof.setSaldo(prof.getSaldo() + qtd);
 
-        // 2) Transação de crédito semestral
-        Transacao tx = new Transacao();
-        tx.setTipo(TipoTransacao.CREDITO_SEMESTRAL);
-        tx.setOrigemProfessor(prof);
-        tx.setQuantidade(qtd);
-        tx.setMensagem("Crédito semestral " + ano + "/" + semestre);
+        // 2) Transação de crédito semestral USANDO O BUILDER
+        Transacao tx = Transacao.builder(TipoTransacao.CREDITO_SEMESTRAL)
+                .origemProfessor(prof)
+                .quantidade(qtd)
+                .mensagem("Crédito semestral " + ano + "/" + semestre)
+                .build();
         txRepo.save(tx);
 
         // 3) Registro de bloqueio (evitar duplicidade)

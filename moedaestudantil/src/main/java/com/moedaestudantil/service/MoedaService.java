@@ -51,13 +51,13 @@ public class MoedaService {
         prof.setSaldo(prof.getSaldo() - qtd);
         aluno.setSaldo(aluno.getSaldo() + qtd);
 
-        // Cria transação de envio
-        Transacao tx = new Transacao();
-        tx.setTipo(TipoTransacao.ENVIO_PROFESSOR);
-        tx.setOrigemProfessor(prof);
-        tx.setDestinoAluno(aluno);
-        tx.setQuantidade(qtd);
-        tx.setMensagem(motivo);
+        // Cria transação de envio USANDO O BUILDER
+        Transacao tx = Transacao.builder(TipoTransacao.ENVIO_PROFESSOR)
+                .origemProfessor(prof)
+                .destinoAluno(aluno)
+                .quantidade(qtd)
+                .mensagem(motivo)
+                .build();
         txRepo.save(tx);
 
         // Notificação para o aluno
@@ -98,14 +98,14 @@ public class MoedaService {
                 .substring(0, 12)
                 .toUpperCase();
 
-        // Cria transação de resgate
-        Transacao tx = new Transacao();
-        tx.setTipo(TipoTransacao.RESGATE_ALUNO);
-        tx.setDestinoAluno(aluno);
-        tx.setVantagem(v);
-        tx.setQuantidade(v.getCusto());
-        tx.setCodigoCupom(codigo);
-        tx.setMensagem("Resgate da vantagem: " + v.getTitulo());
+        // Cria transação de resgate USANDO O BUILDER
+        Transacao tx = Transacao.builder(TipoTransacao.RESGATE_ALUNO)
+                .destinoAluno(aluno)
+                .vantagem(v)
+                .quantidade(v.getCusto())
+                .codigoCupom(codigo)
+                .mensagem("Resgate da vantagem: " + v.getTitulo())
+                .build();
         txRepo.save(tx);
 
         // Notificação para o aluno

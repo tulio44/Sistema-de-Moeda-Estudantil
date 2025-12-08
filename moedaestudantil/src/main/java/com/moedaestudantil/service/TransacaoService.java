@@ -34,13 +34,14 @@ public class TransacaoService {
         aluno.setSaldo(aluno.getSaldo() + quantidade);
         professorRepository.save(professor);
         alunoRepository.save(aluno);
-        Transacao tx = new Transacao();
-        tx.setTipo(com.moedaestudantil.domain.model.enums.TipoTransacao.ENVIO_PROFESSOR);
-        tx.setOrigemProfessor(professor);
-        tx.setDestinoAluno(aluno);
-        tx.setQuantidade(quantidade);
-        tx.setMensagem(mensagem);
-        tx.setCriadoEm(java.time.Instant.now());
+        
+        // Criação de transação USANDO O BUILDER
+        Transacao tx = Transacao.builder(com.moedaestudantil.domain.model.enums.TipoTransacao.ENVIO_PROFESSOR)
+                .origemProfessor(professor)
+                .destinoAluno(aluno)
+                .quantidade(quantidade)
+                .mensagem(mensagem)
+                .build();
         transacaoRepository.save(tx);
         // TODO: notificar aluno por email
         return tx;
